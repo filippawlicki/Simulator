@@ -1,7 +1,7 @@
 #include "Organism.h"
 
-Organism::Organism(const Point &position, const char &symbol, const int &strength, const int &initiative) :
-position(position), symbol(symbol), strength(strength), initiative(initiative) {}
+Organism::Organism(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative) :
+world(world), position(position), symbol(symbol), strength(strength), initiative(initiative) {}
 
 Point Organism::GetPosition() const {
   return position;

@@ -18,16 +18,16 @@ void GameManager::PrintTheWorld() {
   int width =  world.GetWidth();
   Organism*** worldMap = world.getMapOfTheWorld();
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
-  for(int x = 0; x < width; x++) {
+  for(int y = 0; y < height; y++) {
     std::cout << "|";
-    for(int y = 0; y < height; y++) {
+    for(int x = 0; x < width; x++) {
       if(worldMap[x][y] != nullptr) {
         worldMap[x][y]->Draw();
       } else {
         std::cout << " ";
       }
     }
-    std::cout << "|";
+    std::cout << "|" << NEWLINE;
   }
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
 }

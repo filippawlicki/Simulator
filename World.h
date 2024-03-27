@@ -12,14 +12,14 @@ private:
   Organism*** worldMap; // 2D array for every square
   std::vector<Organism> organisms; // Vector for every organism
 
-  World(const int &w, const int &h) : width(w), height(h) {}
+  World(const int &w, const int &h);
 public:
-  static World& getInstance(const int &w, const int &h) {};
+  static World& getInstance(const int &w, const int &h);
 
-  ~World() {}
+  ~World();
 
-  Organism* getOrganismAt(const int &x, const int &y) const {}
-  Organism*** getMapOfTheWorld() const {}
+  Organism* getOrganismAt(const int &x, const int &y) const;
+  Organism*** getMapOfTheWorld() const;
 
   int GetWidth() const;
   int GetHeight() const;

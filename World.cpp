@@ -4,7 +4,10 @@ World::World(const int &w, const int &h) : width(w), height(h) {
   worldMap = new Organism**[width];
   
   for (int i = 0; i < width; ++i) {
-      worldMap[i] = new Organism*[height];
+    worldMap[i] = new Organism*[height];
+    for (int j = 0; j < height; ++j) {
+      worldMap[i][j] = nullptr; // Initialize each element to nullptr
+    }
   }
 }
 

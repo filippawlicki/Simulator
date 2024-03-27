@@ -18,7 +18,8 @@ int menu() {
   std::cout << "Enter Your Choice (Number)" << NEWLINE;
   int select;
   while(true) {
-    select = int(getch());
+    std::cout << "INSIDE LOOP" << std::endl;
+    select = getch() - '0';
     if(select > 0 && select < 4)
       return select;
   }
