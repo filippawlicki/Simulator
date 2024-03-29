@@ -9,8 +9,7 @@ protected:
   double GetSpreadProbability() const;
   void TryToSpread();
 public:
-  Plant(World &world, const Point &position, const char &symbol, const int &strength, 
-  const double &spreadProbability);
+  Plant(World &world, const Point &position, const char &symbol, const int &strength, const std::string &color);
 
   ~Plant();
 

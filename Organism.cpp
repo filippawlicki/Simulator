@@ -1,7 +1,9 @@
+#include "CONSTANTS.h"
 #include "Organism.h"
+#include <iostream>
 
-Organism::Organism(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative) :
-world(world), position(position), symbol(symbol), strength(strength), initiative(initiative) {}
+Organism::Organism(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color) :
+world(world), position(position), symbol(symbol), strength(strength), initiative(initiative), color(color){}
 
 Point Organism::GetPosition() const {
   return position;
@@ -22,4 +24,8 @@ int Organism::GetStrength() const {
 
 char Organism::GetSymbol() const {
   return symbol;
+}
+
+void Organism::Draw() {
+  std::cout << color << symbol << RESET_COLOR;
 }

@@ -2,6 +2,8 @@
 #include "World.h"
 #include "GameManager.h"
 
+#include "Grass.h"
+
 #include "conio.h"
 #include "windows.h"
 #include <iostream>
@@ -47,8 +49,9 @@ void newGame() {
     }
   }
   sleep(2);
-  World& worldInstance = World::getInstance(width, height);
+  World& worldInstance = World::GetInstance(width, height);
   GameManager gameManager(worldInstance);
+  worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.PrintTheWorld();
 }
 

@@ -1,6 +1,7 @@
 #include "Point.h"
 
 Point::Point(const int &x, const int &y) : x(x), y(y) {}
+Point::Point() : x(0), y(0) {}
 
 void Point::SetX(const int &x) {
   this->x = x;
@@ -16,4 +17,12 @@ int Point::GetX() const {
 
 int Point::GetY() const {
   return y;
+}
+
+bool Point::operator==(const Point &point) const {
+  return x == point.x && y == point.y;
+}
+
+bool Point::operator!=(const Point &point) const {
+  return x != point.x || y != point.y;
 }

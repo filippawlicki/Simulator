@@ -16,7 +16,7 @@ void GameManager::PrintTheWorld() {
   system("cls");
   int height = world.GetHeight();
   int width =  world.GetWidth();
-  Organism*** worldMap = world.getMapOfTheWorld();
+  Organism*** worldMap = world.GetMapOfTheWorld();
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
   for(int y = 0; y < height; y++) {
     std::cout << "|";
