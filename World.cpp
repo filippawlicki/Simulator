@@ -1,6 +1,9 @@
 #include "World.h"
 #include <stdlib.h>
 
+#include <algorithm>
+#include <random>
+
 World::World(const int &w, const int &h) : width(w), height(h) {
   worldMap = new Organism**[width];
   
@@ -75,12 +78,16 @@ Point World::GetRandomPositionAround(const Point &position, const bool &isFree) 
   Point newPosition;
   int x = position.GetX();
   int y = position.GetY();
-  for(int i = -1; i < 2; i++) {
-    for(int j = -1; j < 2; j++) {
-      if((IsPositionWithinBounds(Point(x + i, y + j))) && (GetOrganismAt(x + i, y + j) == nullptr) == isFree) {
-        newPosition.SetX(x + i);
-        newPosition.SetY(y + j);
-        return newPosition;
+  Point directions[] = {Point(x-1, y), Point(x+1, y), Point(x, y-1), Point(x, y+1)};
+  std::shuffle(std::begin(directions), std::end(directions), std::random_device());
+  for (int i = 0; i < 4; i++) {
+    if (IsPositionWithinBounds(directions[i])) {
+      if (isFree) {
+        if (IsPositionFree(directions[i])) {
+          return directions[i];
+        }
+      } else {
+        return directions[i];
       }
     }
   }

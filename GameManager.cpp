@@ -4,34 +4,30 @@
 #include <iostream>
 #include <cstdlib>
 #include "conio.h"
+#include <unistd.h>
 
 GameManager::GameManager(World &world) : world(world), quit(false) {}
 
 GameManager::~GameManager() {}
 
-bool GameManager::Quit() const
-{
+bool GameManager::Quit() const {
   return quit;
 }
 
-void GameManager::PrintTheWorld()
-{
+void GameManager::PrintTheWorld() {
   system("cls");
   int height = world.GetHeight();
   int width = world.GetWidth();
   Organism ***worldMap = world.GetMapOfTheWorld();
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
-  for (int y = 0; y < height; y++)
-  {
+  for (int y = 0; y < height; y++) {
     std::cout << "|";
     for (int x = 0; x < width; x++)
     {
-      if (worldMap[x][y] != nullptr)
-      {
+      if (worldMap[x][y] != nullptr) {
         worldMap[x][y]->Draw();
       }
-      else
-      {
+      else {
         std::cout << " ";
       }
     }
@@ -40,38 +36,36 @@ void GameManager::PrintTheWorld()
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
 }
 
-char GameManager::GetPlayerInput()
-{
-  char input;
-  do
-  {
+char GameManager::GetPlayerInput() {
+  int input;
+  do {
     input = getch();
-    if (input == '\033') { // First value for arrow keys
-      getch(); // Skip [
-      switch (getch()) {
-      case 'A': // UP
-        input = '1';
-        break;
-      case 'B': // DOWN
-        input = '2';
-        break;
-      case 'C': // RIGHT
-        input = '3';
-        break;
-      case 'D': // LEFT
-        input = '4';
-        break;
+    if (input == 224) {
+      input = getch(); // Read the extended key code
+      switch (input) {
+        case 72: // Up arrow key
+          input = 'U';
+          break;
+        case 80: // Down arrow key
+          input = 'D';
+          break;
+        case 75: // Left arrow key
+          input = 'L';
+          break;
+        case 77: // Right arrow key
+          input = 'R';
+          break;
       }
+    } else if (input == 120) {
+      return 'x';
     }
-  } while (input != '1' && input != '2' && input != '3' && input != '4' && input != 'x');
-  return input;
+  } while (input != 'U' && input != 'D' && input != 'L' && input != 'R');
+  return char(input);
 }
 
-void GameManager::GameLoop()
-{
+void GameManager::GameLoop() {
   quit = false;
-  while (!quit)
-  {
+  while (!quit) {
     PrintTheWorld();
     GetPlayerInput();
     world.MakeTurn();
