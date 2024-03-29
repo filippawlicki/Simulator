@@ -1,5 +1,6 @@
 #include "CONSTANTS.h"
 
+#include "World.h"
 #include "Plant.h"
 #include <stdlib.h>
 

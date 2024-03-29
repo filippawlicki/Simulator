@@ -53,6 +53,12 @@ Organism*** World::GetMapOfTheWorld() const {
   return worldMap;
 }
 
+void World::MakeTurn() { // TODO: Implement sorting of organisms by initiative and age before making a turn
+  for (int i = 0; i < organisms.size(); i++) {
+    organisms[i]->Action();
+  }
+}
+
 Point World::GetRandomFreePosition() const {
   if(!IsAnyPositionFree()) {
     return Point(-1, -1); // Return if there are no free positions

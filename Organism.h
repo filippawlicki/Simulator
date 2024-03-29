@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Point.h"
-#include "World.h"
 #include <string>
+
+class World;
 
 class Organism {
 private:

@@ -52,7 +52,7 @@ void newGame() {
   World& worldInstance = World::GetInstance(width, height);
   GameManager gameManager(worldInstance);
   worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
-  gameManager.PrintTheWorld();
+  gameManager.GameLoop();
 }
 
 void loadGame() {

@@ -9,7 +9,7 @@ private:
   
   //void PrintTheWorld();
   void PrintMessages();
-  void GetPlayerInput();
+  char GetPlayerInput();
 public:
   GameManager(World &world);
   ~GameManager();

@@ -29,6 +29,8 @@ public:
   Point GetRandomFreePosition() const;
   Point GetRandomPositionAround(const Point &position, const bool &isFree) const;
 
+  void MakeTurn();
+
   void AddOrganism(Organism *organism);
 
   int GetWidth() const;
