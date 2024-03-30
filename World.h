@@ -35,6 +35,8 @@ public:
   void RemoveOrganism(Organism *organism);
   void MoveOrganism(Organism *organism, const Point &newPosition);
 
+  Point GetRandomPositionForChild(const Point &positionA, const Point &positionB) const;
+
   int GetWidth() const;
   int GetHeight() const;
 };

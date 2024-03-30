@@ -11,6 +11,8 @@ private:
 
   Point position;
   
+  bool canAction;
+
   int age;
   int initiative;
   int strength;
@@ -35,6 +37,9 @@ public:
 
   int GetAge() const;
   void IncrementAge();
+
+  bool CanAction() const;
+  void SetCanAction(const bool &canAction);
 
   int GetInitiative() const;
 

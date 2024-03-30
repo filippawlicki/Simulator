@@ -48,3 +48,11 @@ void Organism::Draw() {
 void Organism::Die() {
   this->world.RemoveOrganism(this);
 }
+
+bool Organism::CanAction() const {
+  return canAction;
+}
+
+void Organism::SetCanAction(const bool &canAction) {
+  this->canAction = canAction;
+}

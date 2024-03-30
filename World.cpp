@@ -3,8 +3,6 @@
 
 #include <algorithm>
 #include <random>
-#include <unistd.h>
-#include <iostream>
 
 World::World(const int &w, const int &h) : width(w), height(h) {
   worldMap = new Organism**[width];
@@ -67,8 +65,9 @@ void World::MakeTurn() {
     return a->GetInitiative() > b->GetInitiative();
   });
   for (Organism *organism : organismsToSort) {
-    std::cout << organism->GetSymbol() << organism->GetPosition().GetX() << organism->GetPosition().GetY() << std::endl;
-    sleep(1);
+    organism->SetCanAction(true);
+  }
+  for (Organism *organism : organismsToSort) {
     organism->Action();
   }
   for (Organism *organism : organisms) {
@@ -153,4 +152,26 @@ void World::MoveOrganism(Organism *organism, const Point &newPosition) {
   worldMap[oldPosition.GetX()][oldPosition.GetY()] = nullptr;
   worldMap[newPosition.GetX()][newPosition.GetY()] = organism;
   organism->SetPosition(newPosition.GetX(), newPosition.GetY());
+  // std::cout << "Moved from: " << oldPosition.GetX() << " " << oldPosition.GetY() << std::endl;
+  // std::cout << "Moved to: " << newPosition.GetX() << " " << newPosition.GetY() << std::endl;
+}
+
+Point World::GetRandomPositionForChild(const Point &positionA, const Point &positionB) const {
+  std::vector <Point> positions;
+  Point directions[] = {Point(0, 1), Point(0, -1), Point(1, 0), Point(-1, 0)};
+  for (int i = 0; i < 4; i++) {
+    Point newPositionA = positionA + directions[i];
+    Point newPositionB = positionB + directions[i];
+    if (IsPositionWithinBounds(newPositionA) && IsPositionFree(newPositionA)) {
+      positions.push_back(newPositionA);
+    }
+    if (IsPositionWithinBounds(newPositionB) && IsPositionFree(newPositionB)) {
+      positions.push_back(newPositionB);
+    }
+  }
+  std::shuffle(std::begin(positions), std::end(positions), std::random_device());
+  if(!positions.empty()) {
+    return positions[0];
+  }
+  return positionA; // If no free position was found, return the original positionA
 }

@@ -53,11 +53,11 @@ void newGame() {
   sleep(2);
   World& worldInstance = World::GetInstance(width, height);
   GameManager gameManager(worldInstance);
-  // worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
-  // worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
-  // worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Wolf(worldInstance, Point(0, 0)));
-  worldInstance.AddOrganism(new Wolf(worldInstance, Point(0, 1)));
+  worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.GameLoop();
 }
 

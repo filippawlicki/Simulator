@@ -16,4 +16,6 @@ public:
 
   bool operator==(const Point &point) const;
   bool operator!=(const Point &point) const;
+
+  Point operator+(const Point &point) const;
 };
