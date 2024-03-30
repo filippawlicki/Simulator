@@ -23,7 +23,6 @@ int menu() {
   std::cout << "Enter Your Choice (Number)" << NEWLINE;
   int select;
   while(true) {
-    std::cout << "INSIDE LOOP" << std::endl;
     select = getch() - '0';
     if(select > 0 && select < 4)
       return select;
@@ -57,8 +56,8 @@ void newGame() {
   // worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
   // worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
   // worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Wolf(worldInstance, Point(0, 0)));
+  worldInstance.AddOrganism(new Wolf(worldInstance, Point(0, 1)));
   gameManager.GameLoop();
 }
 

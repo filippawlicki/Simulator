@@ -1,5 +1,7 @@
 #include "World.h"
 #include "Animal.h"
+#include <iostream>
+#include <unistd.h>
 
 Animal::  Animal(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color)
   : Organism(world, position, symbol, strength, initiative, color) {}
@@ -11,7 +13,7 @@ void Animal::Action() {
   if (newPosition != this->GetPosition()) {
     Organism* attackerOrganism = this->world.GetOrganismAt(newPosition);
     if (attackerOrganism == nullptr) { // Free space
-      this->SetPosition(newPosition.GetX(), newPosition.GetY());
+      this->world.MoveOrganism(this, newPosition);
     } else { // Collision
       if (this->GetSymbol() == attackerOrganism->GetSymbol()) {
         this->Collision(attackerOrganism); // Breed
@@ -27,7 +29,9 @@ void Animal::Action() {
 }
 
 bool Animal::Collision(Organism* attackerOrganism) {
-  if(dynamic_cast<const void*>(this) == dynamic_cast<const void*>(attackerOrganism)) { 
+  if(this->GetSymbol() == attackerOrganism->GetSymbol()){
+    std::cout << "BREED";
+    sleep(1);
     this->Breed();
     return true;
   } else {
@@ -37,7 +41,7 @@ bool Animal::Collision(Organism* attackerOrganism) {
 }
 
 void Animal::Breed() {
-  Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), false);
+  Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), true);
   if (newPosition != this->GetPosition()) {
     Organism* newOrganism = this->Clone(newPosition);
     this->world.AddOrganism(newOrganism);

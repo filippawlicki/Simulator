@@ -33,6 +33,7 @@ public:
 
   void AddOrganism(Organism *organism);
   void RemoveOrganism(Organism *organism);
+  void MoveOrganism(Organism *organism, const Point &newPosition);
 
   int GetWidth() const;
   int GetHeight() const;

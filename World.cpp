@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <random>
+#include <unistd.h>
+#include <iostream>
 
 World::World(const int &w, const int &h) : width(w), height(h) {
   worldMap = new Organism**[width];
@@ -65,6 +67,8 @@ void World::MakeTurn() {
     return a->GetInitiative() > b->GetInitiative();
   });
   for (Organism *organism : organismsToSort) {
+    std::cout << organism->GetSymbol() << organism->GetPosition().GetX() << organism->GetPosition().GetY() << std::endl;
+    sleep(1);
     organism->Action();
   }
   for (Organism *organism : organisms) {
@@ -142,4 +146,11 @@ void World::RemoveOrganism(Organism *organism) {
   Point position = organism->GetPosition();
   worldMap[position.GetX()][position.GetY()] = nullptr;
   organisms.erase(std::remove(organisms.begin(), organisms.end(), organism), organisms.end());
+}
+
+void World::MoveOrganism(Organism *organism, const Point &newPosition) {
+  Point oldPosition = organism->GetPosition();
+  worldMap[oldPosition.GetX()][oldPosition.GetY()] = nullptr;
+  worldMap[newPosition.GetX()][newPosition.GetY()] = organism;
+  organism->SetPosition(newPosition.GetX(), newPosition.GetY());
 }
