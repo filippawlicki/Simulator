@@ -3,6 +3,7 @@
 #include "GameManager.h"
 
 #include "Grass.h"
+#include "SowThistle.h"
 
 #include "conio.h"
 #include "windows.h"
@@ -52,6 +53,7 @@ void newGame() {
   World& worldInstance = World::GetInstance(width, height);
   GameManager gameManager(worldInstance);
   worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.GameLoop();
 }
 
