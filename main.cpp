@@ -4,6 +4,7 @@
 
 #include "Grass.h"
 #include "SowThistle.h"
+#include "Guarana.h"
 
 #include "conio.h"
 #include "windows.h"
@@ -54,6 +55,7 @@ void newGame() {
   GameManager gameManager(worldInstance);
   worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
   worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.GameLoop();
 }
 

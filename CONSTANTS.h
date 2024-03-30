@@ -12,8 +12,11 @@
 #define SOWTHISTLE_STRENGTH 0
 #define SOWTHISTLE_COLOR "\033[33m"
 
+#define GUARANA_SYMBOL 'U'
+#define GUARANA_STRENGTH 0
+#define GUARANA_COLOR "\033[31m"
+
 #define RESET_COLOR "\033[0m"
-#define RED "\033[31m"
 #define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"

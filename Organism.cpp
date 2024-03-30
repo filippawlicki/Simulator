@@ -22,6 +22,10 @@ int Organism::GetStrength() const {
   return strength;
 }
 
+void Organism::SetStrength(const int &strength) {
+  this->strength = strength;
+}
+
 char Organism::GetSymbol() const {
   return symbol;
 }

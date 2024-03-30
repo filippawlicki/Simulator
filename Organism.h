@@ -32,6 +32,7 @@ public:
 
   int GetInitiative() const;
   int GetStrength() const;
+  void SetStrength(const int &strength);
   char GetSymbol() const;
   
   virtual Organism* Clone(const Point &position) = 0;
