@@ -32,6 +32,7 @@ public:
   void MakeTurn();
 
   void AddOrganism(Organism *organism);
+  void RemoveOrganism(Organism *organism);
 
   int GetWidth() const;
   int GetHeight() const;

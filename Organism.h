@@ -1,5 +1,6 @@
 #pragma once
 
+#include "World.h"
 #include "Point.h"
 #include <string>
 
@@ -11,6 +12,7 @@ private:
 
   Point position;
   
+  int age;
   int initiative;
   int strength;
   std::string color;
@@ -27,12 +29,19 @@ public:
 
   void Draw();
 
+  void Die();
+
   Point GetPosition() const;
   void SetPosition(const int &x, const int &y);
 
+  int GetAge() const;
+  void IncrementAge();
+
   int GetInitiative() const;
+
   int GetStrength() const;
   void SetStrength(const int &strength);
+
   char GetSymbol() const;
   
   virtual Organism* Clone(const Point &position) = 0;

@@ -14,6 +14,14 @@ void Organism::SetPosition(const int &x, const int &y) {
   position.SetY(y); 
 }
 
+int Organism::GetAge() const {
+  return age;
+}
+
+void Organism::IncrementAge() {
+  age++;
+}
+
 int Organism::GetInitiative() const {
   return initiative;
 }
@@ -32,4 +40,8 @@ char Organism::GetSymbol() const {
 
 void Organism::Draw() {
   std::cout << color << symbol << RESET_COLOR;
+}
+
+void Organism::Die() {
+  world.RemoveOrganism(this);
 }

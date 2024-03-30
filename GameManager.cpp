@@ -67,7 +67,11 @@ void GameManager::GameLoop() {
   quit = false;
   while (!quit) {
     PrintTheWorld();
-    GetPlayerInput();
+    char input = GetPlayerInput();
+    if(input == 'x') {
+      quit = true;
+      break;
+    }
     world.MakeTurn();
     // PrintMessages();
   }

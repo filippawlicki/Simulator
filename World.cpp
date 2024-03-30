@@ -56,9 +56,19 @@ Organism*** World::GetMapOfTheWorld() const {
   return worldMap;
 }
 
-void World::MakeTurn() { // TODO: Implement sorting of organisms by initiative and age before making a turn
-  for (int i = 0; i < organisms.size(); i++) {
-    organisms[i]->Action();
+void World::MakeTurn() {
+  std::vector<Organism*> organismsToSort = organisms;
+  std::sort(organismsToSort.begin(), organismsToSort.end(), [](Organism *a, Organism *b) {
+    if (a->GetInitiative() == b->GetInitiative()) {
+      return a->GetAge() > b->GetAge();
+    }
+    return a->GetInitiative() > b->GetInitiative();
+  });
+  for (Organism *organism : organismsToSort) {
+    organism->Action();
+  }
+  for (Organism *organism : organisms) {
+    organism->IncrementAge();
   }
 }
 
@@ -126,4 +136,10 @@ int World::GetHeight() const {
 
 int World::GetWidth() const {
   return width;
+}
+
+void World::RemoveOrganism(Organism *organism) {
+  Point position = organism->GetPosition();
+  worldMap[position.GetX()][position.GetY()] = nullptr;
+  organisms.erase(std::remove(organisms.begin(), organisms.end(), organism), organisms.end());
 }
