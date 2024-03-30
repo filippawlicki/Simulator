@@ -16,8 +16,12 @@
 #define GUARANA_STRENGTH 0
 #define GUARANA_COLOR "\033[31m"
 
+#define WOLF_SYMBOL 'W'
+#define WOLF_STRENGTH 9
+#define WOLF_INITIATIVE 5
+#define WOLF_COLOR "\033[37m"
+
 #define RESET_COLOR "\033[0m"
 #define BLUE "\033[34m"
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
-#define WHITE "\033[37m"

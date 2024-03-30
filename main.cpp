@@ -5,6 +5,7 @@
 #include "Grass.h"
 #include "SowThistle.h"
 #include "Guarana.h"
+#include "Wolf.h"
 
 #include "conio.h"
 #include "windows.h"
@@ -53,9 +54,11 @@ void newGame() {
   sleep(2);
   World& worldInstance = World::GetInstance(width, height);
   GameManager gameManager(worldInstance);
-  worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
+  // worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
+  // worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
+  // worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.GameLoop();
 }
 

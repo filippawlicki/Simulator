@@ -1,4 +1,6 @@
 #include "CONSTANTS.h"
+
+#include "World.h"
 #include "Organism.h"
 #include <iostream>
 
@@ -30,6 +32,7 @@ int Organism::GetStrength() const {
   return strength;
 }
 
+
 void Organism::SetStrength(const int &strength) {
   this->strength = strength;
 }
@@ -43,5 +46,5 @@ void Organism::Draw() {
 }
 
 void Organism::Die() {
-  world.RemoveOrganism(this);
+  this->world.RemoveOrganism(this);
 }

@@ -32,6 +32,7 @@ bool Animal::Collision(Organism* attackerOrganism) {
     return true;
   } else {
     this->Die();
+    return false;
   }
 }
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "World.h"
 #include "Point.h"
 #include <string>
 
