@@ -25,15 +25,18 @@ public:
   bool IsPositionFree(const Point &position) const;
   bool IsPositionWithinBounds(const Point &position) const;
   bool IsAnyPositionFree() const;
+  std::vector<Point> World::GetPositionsAround(const Point &position) const;
 
   Point GetRandomFreePosition() const;
-  Point GetRandomPositionAround(const Point &position, const bool &isFree) const;
+  Point GetRandomPositionAround(const Point &position, const bool &isFree, const int &distance) const;
 
   void MakeTurn();
 
   void AddOrganism(Organism *organism);
   void RemoveOrganism(Organism *organism);
   void MoveOrganism(Organism *organism, const Point &newPosition);
+
+  Point GetClosestOrganismPosition(const Point &position, const char &symbol) const;
 
   Point GetRandomPositionForChild(const Point &positionA, const Point &positionB) const;
 

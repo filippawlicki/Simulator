@@ -87,11 +87,11 @@ Point World::GetRandomFreePosition() const {
   return position;
 }
 
-Point World::GetRandomPositionAround(const Point &position, const bool &isFree) const {
+Point World::GetRandomPositionAround(const Point &position, const bool &isFree, const int &distance) const {
   Point newPosition;
   int x = position.GetX();
   int y = position.GetY();
-  Point directions[] = {Point(x-1, y), Point(x+1, y), Point(x, y-1), Point(x, y+1)};
+  Point directions[] = {Point(x-distance, y), Point(x+distance, y), Point(x, y-distance), Point(x, y+distance)};
   std::shuffle(std::begin(directions), std::end(directions), std::random_device());
   for (int i = 0; i < 4; i++) {
     if (IsPositionWithinBounds(directions[i])) {
@@ -105,6 +105,20 @@ Point World::GetRandomPositionAround(const Point &position, const bool &isFree) 
     }
   }
   return position; // If no free position was found, return the original position
+}
+
+std::vector<Point> World::GetPositionsAround(const Point &position) const {
+  Point newPosition;
+  int x = position.GetX();
+  int y = position.GetY();
+  std::vector<Point> directions = {Point(x-1, y), Point(x+1, y), Point(x, y-1), Point(x, y+1)};
+  std::shuffle(std::begin(directions), std::end(directions), std::random_device());
+  for (int i = 0; i < 4; i++) {
+    if (!IsPositionWithinBounds(directions[i])) {
+      directions.erase(directions.begin() + i);
+    }
+  }
+  return directions;
 }
 
 bool World::IsPositionFree(const Point &position) const {
@@ -154,6 +168,23 @@ void World::MoveOrganism(Organism *organism, const Point &newPosition) {
   organism->SetPosition(newPosition.GetX(), newPosition.GetY());
   // std::cout << "Moved from: " << oldPosition.GetX() << " " << oldPosition.GetY() << std::endl;
   // std::cout << "Moved to: " << newPosition.GetX() << " " << newPosition.GetY() << std::endl;
+}
+
+Point World::GetClosestOrganismPosition(const Point &position, const char &symbol) const {
+  int distance = width * height; // Distance that will never be reached
+  Point closestPosition = position;
+  for(Organism *organism : organisms) {
+    if(organism->GetSymbol() == symbol) {
+      int x = organism->GetPosition().GetX();
+      int y = organism->GetPosition().GetY();
+      int newDistance = abs(x - position.GetX()) + abs(y - position.GetY());
+      if(newDistance < distance) {
+        distance = newDistance;
+        closestPosition = organism->GetPosition();
+      }
+    }
+  }
+  return position; // Return the original position if no organism was found
 }
 
 Point World::GetRandomPositionForChild(const Point &positionA, const Point &positionB) const {

@@ -1,14 +1,16 @@
+#include "CONSTANTS.h"
+#include "Antelope.h"
 #include "World.h"
-#include "Animal.h"
 
-Animal::  Animal(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color)
-  : Organism(world, position, symbol, strength, initiative, color) {}
+Antelope::Antelope(World &world, const Point &position) : Animal(world, position, ANTELOPE_SYMBOL, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_COLOR) {}
 
-Animal::~Animal() {}
+Organism* Antelope::Clone(const Point &position) {
+  return new Antelope(this->world, position);
+}
 
-void Animal::Action() {
+void Antelope::Action() {
   if(CanAction()){
-    Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), false, 1);
+    Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), false, 2);
     if (newPosition != this->GetPosition()) {
       Organism* attackerOrganism = this->world.GetOrganismAt(newPosition);
       if (attackerOrganism == nullptr) { // Free space
@@ -32,20 +34,19 @@ void Animal::Action() {
   }
 }
 
-bool Animal::Collision(Organism* attackerOrganism) {
+bool Antelope::Collision(Organism *attackerOrganism) {
   if(this->GetSymbol() == attackerOrganism->GetSymbol()){
     this->Breed(attackerOrganism->GetPosition());
     return true;
   } else {
-    this->Die();
+    if (rand() % 2 == 0) {
+      Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), true, 1);
+      if (newPosition != this->GetPosition()) {
+        this->world.MoveOrganism(this, newPosition);
+      } else {
+        this->Die();
+      }
+    }
     return false;
-  }
-}
-
-void Animal::Breed(const Point &attackerPosition) {
-  Point newPosition = this->world.GetRandomPositionForChild(this->GetPosition(), attackerPosition);
-  if (newPosition != this->GetPosition()) {
-    Organism* newOrganism = this->Clone(newPosition);
-    this->world.AddOrganism(newOrganism);
   }
 }

@@ -11,12 +11,14 @@ Plant::Plant(World &world, const Point &position, const char &symbol, const int 
 Plant::~Plant() {}
 
 void Plant::Action() {
-  this->TryToSpread();
+  if(CanAction()){
+    this->TryToSpread();
+  }
 }
 
 bool Plant::Collision(Organism* attackerOrganism) {
-  // Function to make it dead
-  return true;
+  this->Die();
+  return false;
 }
 
 double Plant::GetSpreadProbability() const {
@@ -25,7 +27,7 @@ double Plant::GetSpreadProbability() const {
 
 void Plant::TryToSpread() {
   if (rand() % 100 < spreadProbability * 100) {
-    Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), true);
+    Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), true, 1);
     if (newPosition != this->GetPosition()) {
       Organism* newPlant = this->Clone(newPosition);
       this->world.AddOrganism(newPlant);

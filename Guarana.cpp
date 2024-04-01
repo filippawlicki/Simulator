@@ -3,9 +3,10 @@
 
 Guarana::Guarana(World &world, const Point &position) : Plant(world, position, GUARANA_SYMBOL, GUARANA_STRENGTH, GUARANA_COLOR) {}
 
-bool Guarana::Collision(Organism *attacker) { // TODO
+bool Guarana::Collision(Organism *attacker) {
   attacker->SetStrength(attacker->GetStrength() + 3);
-  return Plant::Collision(attacker);
+  this->Die();
+  return false;
 }
 
 Organism* Guarana::Clone(const Point &position) {
