@@ -28,7 +28,7 @@ public:
   bool IsPositionFree(const Point &position) const;
   bool IsPositionWithinBounds(const Point &position) const;
   bool IsAnyPositionFree() const;
-  std::vector<Point> World::GetPositionsAround(const Point &position) const;
+  std::vector<Point> GetPositionsAround(const Point &position) const;
 
   Point GetRandomFreePosition() const;
   Point GetRandomPositionAround(const Point &position, const bool &isFree, const int &distance) const;

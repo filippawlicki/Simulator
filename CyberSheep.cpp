@@ -42,3 +42,7 @@ void CyberSheep::Action() {
     }
   }
 }
+
+Organism* CyberSheep::Clone(const Point &position) {
+  return new CyberSheep(this->world, position);
+}
