@@ -17,11 +17,12 @@ private:
   int initiative;
   int strength;
   std::string color;
+  std::string name;
 
 protected:
   World &world;
 public:
-  Organism(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color);
+  Organism(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color, const std::string &name);
 
   virtual void Action() = 0;
 
@@ -45,6 +46,8 @@ public:
 
   int GetStrength() const;
   void SetStrength(const int &strength);
+
+  std::string GetName() const;
 
   char GetSymbol() const;
   

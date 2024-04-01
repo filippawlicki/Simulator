@@ -4,7 +4,7 @@
 
 #include <vector>
 
-Fox::Fox(World &world, const Point &position) : Animal(world, position, FOX_SYMBOL, FOX_STRENGTH, FOX_INITIATIVE, FOX_COLOR) {}
+Fox::Fox(World &world, const Point &position) : Animal(world, position, FOX_SYMBOL, FOX_STRENGTH, FOX_INITIATIVE, FOX_COLOR, FOX_NAME) {}
 
 Organism* Fox::Clone(const Point &position) {
   return new Fox(this->world, position);

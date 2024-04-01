@@ -3,6 +3,7 @@
 #include "Organism.h"
 #include "Point.h"
 #include "vector"
+#include "MessageManager.h"
 
 class World { // Singleton
 private:
@@ -15,6 +16,8 @@ private:
   World(const int &w, const int &h);
 public:
   static World& GetInstance(const int &w, const int &h);
+
+  MessageManager messageManager;
 
   ~World();
 

@@ -4,8 +4,8 @@
 #include "Plant.h"
 #include <stdlib.h>
 
-Plant::Plant(World &world, const Point &position, const char &symbol, const int &strength, const std::string &color)
-  : Organism(world, position, symbol, strength, PLANT_INITIATIVE, color), 
+Plant::Plant(World &world, const Point &position, const char &symbol, const int &strength, const std::string &color, const std::string &name)
+  : Organism(world, position, symbol, strength, PLANT_INITIATIVE, color, name), 
   spreadProbability(SPREAD_PROBABILITY) {}
 
 Plant::~Plant() {}
@@ -18,6 +18,7 @@ void Plant::Action() {
 
 bool Plant::Collision(Organism* attackerOrganism) {
   this->Die();
+  this->world.messageManager.AddPlantEatingMessage(this->GetName(), attackerOrganism->GetName());
   return false;
 }
 

@@ -57,6 +57,7 @@ Organism*** World::GetMapOfTheWorld() const {
 }
 
 void World::MakeTurn() {
+  messageManager.ClearMessages();
   std::vector<Organism*> organismsToSort = organisms;
   std::sort(organismsToSort.begin(), organismsToSort.end(), [](Organism *a, Organism *b) {
     if (a->GetInitiative() == b->GetInitiative()) {

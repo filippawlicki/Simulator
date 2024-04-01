@@ -4,9 +4,9 @@
 
 class Animal : public Organism {
 protected:
-  void Breed(const Point &attackerPosition);
+  void Breed(Organism* attackerOrganism);
 public:
-  Animal(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color);
+  Animal(World &world, const Point &position, const char &symbol, const int &strength, const int &initiative, const std::string &color, const std::string &name);
   ~Animal();
 
   virtual void Action() override;

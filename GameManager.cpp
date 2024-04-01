@@ -34,6 +34,7 @@ void GameManager::PrintTheWorld() {
     std::cout << "|" << NEWLINE;
   }
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
+  world.messageManager.PrintMessages();
 }
 
 char GameManager::GetPlayerInput() {

@@ -2,7 +2,7 @@
 #include "Antelope.h"
 #include "World.h"
 
-Antelope::Antelope(World &world, const Point &position) : Animal(world, position, ANTELOPE_SYMBOL, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_COLOR) {}
+Antelope::Antelope(World &world, const Point &position) : Animal(world, position, ANTELOPE_SYMBOL, ANTELOPE_STRENGTH, ANTELOPE_INITIATIVE, ANTELOPE_COLOR, ANTELOPE_NAME) {}
 
 Organism* Antelope::Clone(const Point &position) {
   return new Antelope(this->world, position);
@@ -36,7 +36,7 @@ void Antelope::Action() {
 
 bool Antelope::Collision(Organism *attackerOrganism) {
   if(this->GetSymbol() == attackerOrganism->GetSymbol()){
-    this->Breed(attackerOrganism->GetPosition());
+    this->Breed(attackerOrganism);
     return true;
   } else {
     if (rand() % 2 == 0) {
@@ -45,6 +45,7 @@ bool Antelope::Collision(Organism *attackerOrganism) {
         this->world.MoveOrganism(this, newPosition);
       } else {
         this->Die();
+        this->world.messageManager.AddDeathMessage(this->GetName(), attackerOrganism->GetName());
       }
     }
     return false;

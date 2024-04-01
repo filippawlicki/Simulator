@@ -7,51 +7,62 @@
 #define GRASS_SYMBOL 'G'
 #define GRASS_STRENGTH 0
 #define GRASS_COLOR "\033[32m"
+#define GRASS_NAME "Grass"
 
 #define SOWTHISTLE_SYMBOL 'S'
 #define SOWTHISTLE_STRENGTH 0
 #define SOWTHISTLE_COLOR "\033[33m"
+#define SOWTHISTLE_NAME "Sow Thistle"
 
 #define GUARANA_SYMBOL 'U'
 #define GUARANA_STRENGTH 0
 #define GUARANA_COLOR "\033[31m"
+#define GUARANA_NAME "Guarana"
 
 #define NIGHTSHADE_BERRIES_SYMBOL 'N'
 #define NIGHTSHADE_BERRIES_STRENGTH 99
 #define NIGHTSHADE_BERRIES_COLOR "\033[34m"
+#define NIGHTSHADE_BERRIES_NAME "Nightshade Berries"
 
 #define HOGWEED_SYMBOL 'H'
 #define HOGWEED_STRENGTH 10
 #define HOGWEED_COLOR "\033[35m"
+#define HOGWEED_NAME "Hogweed"
 
 #define WOLF_SYMBOL 'W'
 #define WOLF_STRENGTH 9
 #define WOLF_INITIATIVE 5
 #define WOLF_COLOR "\033[37m"
+#define WOLF_NAME "Wolf"
 
 #define SHEEP_SYMBOL 'S'
 #define SHEEP_STRENGTH 4
 #define SHEEP_INITIATIVE 4
 #define SHEEP_COLOR "\033[36m"
+#define SHEEP_NAME "Sheep"
 
 #define FOX_SYMBOL 'F'
 #define FOX_STRENGTH 3
 #define FOX_INITIATIVE 7
 #define FOX_COLOR "\033[33;41m"
+#define FOX_NAME "Fox"
 
 #define TURTLE_SYMBOL 'T'
 #define TURTLE_STRENGTH 2
 #define TURTLE_INITIATIVE 1
 #define TURTLE_COLOR "\033[32;43m"
+#define TURTLE_NAME "Turtle"
 
 #define ANTELOPE_SYMBOL 'A'
 #define ANTELOPE_STRENGTH 4
 #define ANTELOPE_INITIATIVE 4
 #define ANTELOPE_COLOR "\033[32;42m"
+#define ANTELOPE_NAME "Antelope"
 
 #define CYBER_SHEEP_SYMBOL 'C'
 #define CYBER_SHEEP_STRENGTH 11
 #define CYBER_SHEEP_INITIATIVE 4
 #define CYBER_SHEEP_COLOR "\033[31;47m"
+#define CYBER_SHEEP_NAME "Cyber Sheep"
 
 #define RESET_COLOR "\033[0m"
