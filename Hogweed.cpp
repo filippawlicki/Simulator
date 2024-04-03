@@ -35,3 +35,7 @@ bool Hogweed::Collision(Organism *attackerOrganism) {
   }
 }
 
+Organism* Hogweed::Clone(const Point &position) {
+  return new Hogweed(this->world, position);
+}
+

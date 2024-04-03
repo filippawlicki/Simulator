@@ -8,4 +8,5 @@ public:
   
   virtual void Action() override;
   virtual bool Collision(Organism *attackerOrganism) override;
+  virtual Organism* Clone(const Point &position) override;
 };

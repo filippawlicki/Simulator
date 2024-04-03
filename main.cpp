@@ -6,6 +6,8 @@
 #include "SowThistle.h"
 #include "Guarana.h"
 #include "Wolf.h"
+#include "CyberSheep.h"
+#include "Hogweed.h"
 
 #include "conio.h"
 #include "windows.h"
@@ -58,6 +60,8 @@ void newGame() {
   worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
   worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
   worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new CyberSheep(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.GameLoop();
 }
 
@@ -67,7 +71,7 @@ void loadGame() {
 
 int main() {
   std::srand(std::time(nullptr));
-
+  system("cls");
   int option = menu();
   switch(option) {
     case 1:
