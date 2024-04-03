@@ -22,7 +22,7 @@ bool Turtle::Collision(Organism *attackerOrganism) {
     this->Breed(attackerOrganism);
     return true;
   } 
-  if(attackerOrganism->GetStrength() < 5) {
+  if(attackerOrganism->GetStrength() < 5 && dynamic_cast<Animal*>(attackerOrganism) != nullptr) {
     this->world.messageManager.AddAttackRepellMessage(attackerOrganism->GetName(), this->GetName());
     return true;
   } else {

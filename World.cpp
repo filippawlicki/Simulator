@@ -92,16 +92,18 @@ Point World::GetRandomPositionAround(const Point &position, const bool &isFree, 
   Point newPosition;
   int x = position.GetX();
   int y = position.GetY();
-  Point directions[] = {Point(x-distance, y), Point(x+distance, y), Point(x, y-distance), Point(x, y+distance)};
-  std::shuffle(std::begin(directions), std::end(directions), std::random_device());
-  for (int i = 0; i < 4; i++) {
-    if (IsPositionWithinBounds(directions[i])) {
+  std::vector<Point> directions = {Point(x-distance, y), Point(x+distance, y), Point(x, y-distance), Point(x, y+distance)};
+  while(!directions.empty()) {
+    int randomIndex = rand() % directions.size();
+    newPosition = directions[randomIndex];
+    directions.erase(directions.begin() + randomIndex);
+    if (IsPositionWithinBounds(newPosition)) {
       if (isFree) {
-        if (IsPositionFree(directions[i])) {
-          return directions[i];
+        if (IsPositionFree(newPosition)) {
+          return newPosition;
         }
       } else {
-        return directions[i];
+        return newPosition;
       }
     }
   }
@@ -167,8 +169,6 @@ void World::MoveOrganism(Organism *organism, const Point &newPosition) {
   worldMap[oldPosition.GetX()][oldPosition.GetY()] = nullptr;
   worldMap[newPosition.GetX()][newPosition.GetY()] = organism;
   organism->SetPosition(newPosition.GetX(), newPosition.GetY());
-  // std::cout << "Moved from: " << oldPosition.GetX() << " " << oldPosition.GetY() << std::endl;
-  // std::cout << "Moved to: " << newPosition.GetX() << " " << newPosition.GetY() << std::endl;
 }
 
 Point World::GetClosestOrganismPosition(const Point &position, const char &symbol) const {
@@ -185,7 +185,7 @@ Point World::GetClosestOrganismPosition(const Point &position, const char &symbo
       }
     }
   }
-  return position; // Return the original position if no organism was found
+  return closestPosition; // Return the original position if no organism was found
 }
 
 Point World::GetRandomPositionForChild(const Point &positionA, const Point &positionB) const {

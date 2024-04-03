@@ -62,6 +62,8 @@ void newGame() {
   worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
   worldInstance.AddOrganism(new CyberSheep(worldInstance, worldInstance.GetRandomFreePosition()));
   worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
+  worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
   gameManager.GameLoop();
 }
 

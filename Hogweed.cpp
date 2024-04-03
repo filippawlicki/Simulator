@@ -11,13 +11,12 @@ void Hogweed::Action() {
   if(CanAction()) {
     std::vector<Point> newPositions = this->world.GetPositionsAround(this->GetPosition());
     for (int i = 0; i < 4; i++) {
-      Point new_position = newPositions[i];
-      Organism *organism = this->world.GetOrganismAt(new_position);
-      if (organism != nullptr) { // Check if there is an animal on the field and it is not a cyber-sheep
-        if(dynamic_cast<Animal*>(organism) != nullptr && organism->GetSymbol() != CYBER_SHEEP_SYMBOL) {
-          organism->Die();
-          this->world.messageManager.AddDeathMessage(organism->GetName(), this->GetName());
-        }
+      Point newPosition = newPositions[i];
+      Organism *organism = this->world.GetOrganismAt(newPosition);
+      // Check if there is an animal on the field and it is not a cyber-sheep
+      if(organism != nullptr && dynamic_cast<Animal*>(organism) != nullptr && organism->GetSymbol() != CYBER_SHEEP_SYMBOL) {
+        organism->Die();
+        this->world.messageManager.AddDeathMessage(organism->GetName(), this->GetName());
       }
     }
   }
@@ -29,9 +28,8 @@ bool Hogweed::Collision(Organism *attackerOrganism) {
   if(attackerOrganism->GetSymbol() == CYBER_SHEEP_SYMBOL) {
     return false;
   } else {
-    attackerOrganism->Die();
-    this->world.messageManager.AddDeathMessage(attackerOrganism->GetName(), this->GetName());
-    return true;
+    attackerOrganism->Collision(this);
+    return false;
   }
 }
 

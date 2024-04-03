@@ -39,7 +39,7 @@ bool Antelope::Collision(Organism *attackerOrganism) {
     this->Breed(attackerOrganism);
     return true;
   } else {
-    if (rand() % 2 == 0) {
+    if (rand() % 2 == 0 && dynamic_cast<Animal*>(attackerOrganism) != nullptr) {
       Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), true, 1);
       if (newPosition != this->GetPosition()) {
         this->world.MoveOrganism(this, newPosition);
