@@ -15,6 +15,7 @@
 #include "Human.h"
 #include "NightshadeBerries.h"
 
+#include <fstream>
 #include "conio.h"
 #include "windows.h"
 #include <iostream>
@@ -94,7 +95,73 @@ void newGame() {
 }
 
 void loadGame() {
-  std::cout << "LOAD GAME";
+  std::cout << "Enter the name of the save file: " << NEWLINE;
+  std::string fileName;
+  std::cin >> fileName;
+  fileName = "SAVES/" + fileName; // Add the directory path
+
+  std::ifstream file(fileName);
+  if (!file.is_open()) {
+    std::cout << "Failed to open the save file." << NEWLINE;
+    return;
+  }
+
+  // Read the game state from the file and initialize the world and game manager
+  int width, height;
+  file >> width >> height;
+  World& worldInstance = World::GetInstance(width, height);
+  GameManager gameManager(worldInstance);
+
+  // Read and add organisms to the world
+  int organismCount;
+  file >> organismCount;
+  for (int i = 0; i < organismCount; i++) {
+    std::string organismType;
+    int x, y, strength;
+    file >> x >> y >> organismType >> strength;
+
+    // Create the organism based on its type and add it to the world
+    Organism* organism;
+    if (organismType[0] == GRASS_SYMBOL) {
+      organism = new Grass(worldInstance, Point(x, y));
+    } else if (organismType[0] == SOWTHISTLE_SYMBOL) {
+      organism = new SowThistle(worldInstance, Point(x, y));
+    } else if (organismType[0] == GUARANA_SYMBOL) {
+      organism = new Guarana(worldInstance, Point(x, y));
+    } else if (organismType[0] == NIGHTSHADE_BERRIES_SYMBOL) {
+      organism = new NightshadeBerries(worldInstance, Point(x, y));
+    } else if (organismType[0] == HOGWEED_SYMBOL) {
+      organism = new Hogweed(worldInstance, Point(x, y));
+    } else if (organismType[0] == CYBER_SHEEP_SYMBOL) {
+      organism = new CyberSheep(worldInstance, Point(x, y));
+    } else if (organismType[0] == WOLF_SYMBOL) {
+      organism = new Wolf(worldInstance, Point(x, y));
+    } else if (organismType[0] == TURTLE_SYMBOL) {
+      organism = new Turtle(worldInstance, Point(x, y));
+    } else if (organismType[0] == FOX_SYMBOL) {
+      organism = new Fox(worldInstance, Point(x, y));
+    } else if (organismType[0] == SHEEP_SYMBOL) {
+      organism = new Sheep(worldInstance, Point(x, y));
+    } else if (organismType[0] == ANTELOPE_SYMBOL) {
+      organism = new Antelope(worldInstance, Point(x, y));
+    } else if (organismType[0] == HUMAN_SYMBOL) {
+      organism = new Human(worldInstance, Point(x, y));
+      int superPowerCooldown;
+      file >> superPowerCooldown;
+      worldInstance.SetHumanSuperPowerCooldown(superPowerCooldown);
+      int superPowerDuration;
+      file >> superPowerDuration;
+      worldInstance.SetHumanSuperPowerDuration(superPowerDuration);
+    }
+    organism->SetStrength(strength);
+    worldInstance.AddOrganism(organism);
+  }
+
+  // Close the file
+  file.close();
+
+  // Start the game loop
+  gameManager.GameLoop();
 }
 
 int main() {

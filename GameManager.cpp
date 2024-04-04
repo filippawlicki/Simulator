@@ -1,6 +1,7 @@
 #include "CONSTANTS.h"
 #include "GameManager.h"
 
+#include <fstream>
 #include <iostream>
 #include <cstdlib>
 #include "conio.h"
@@ -100,7 +101,29 @@ void GameManager::ExecutePlayerInput() {
     if(input == 'q') { // Quit
       quit = true;
     } else if(input == 's') { // Save game
-      // Save game
+      std::string fileName;
+      std::cout << "Enter the name of the file to save: ";
+      std::cin >> fileName;
+      std::ofstream saveFile("SAVES/" + fileName + ".txt");
+      if (saveFile.is_open()) {
+        // Save world state
+        saveFile << world.GetHeight() << " " << world.GetWidth() << "\n";
+        Organism ***worldMap = world.GetMapOfTheWorld();
+        for (int y = 0; y < world.GetHeight(); y++) {
+          for (int x = 0; x < world.GetWidth(); x++) {
+            if (worldMap[x][y] != nullptr) {
+              saveFile << x << " " << y << " " << worldMap[x][y]->GetSymbol() << " " << worldMap[x][y]->GetStrength() << "\n";
+              if (worldMap[x][y]->GetSymbol() == HUMAN_SYMBOL) { // Save player state
+                saveFile << world.GetHumanSuperPowerCooldown() << world.GetHumanSuperPowerDuration() << "\n";
+              }
+            }
+          }
+        }
+        saveFile.close();
+        std::cout << "Game saved successfully" << NEWLINE;
+      } else {
+        std::cout << "Failed to save the game" << NEWLINE;
+      }
       print = false;
     } else if(input == 'x') { // Super Power
       if(world.GetHumanSuperPowerCooldown() == 0) {
