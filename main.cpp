@@ -25,6 +25,7 @@
 
 int menu() {
   SetConsoleTitle(TEXT("Filip Pawlicki 198371, OOP Simulation"));
+  std::cout << "Filip Pawlicki 198371" << NEWLINE;
   std::cout << "OOP Simulation" << NEWLINE;
   std::cout << "1) New Game" << NEWLINE;
   std::cout << "2) Load Game" << NEWLINE;
