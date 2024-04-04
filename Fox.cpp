@@ -30,10 +30,12 @@ void Fox::Action() {
           this->Collision(attackerOrganism); // Breed
         } else {
           if(this->GetStrength() >= attackerOrganism->GetStrength()) {
-            attackerOrganism->Collision(this); // Kill
-            this->world.MoveOrganism(this, newPosition);
+            bool takenField = attackerOrganism->Collision(this); // Kill
+            if(!takenField && attackerOrganism->GetSymbol() != HOGWEED_SYMBOL && attackerOrganism->GetSymbol() != NIGHTSHADE_BERRIES_SYMBOL) {
+              this->world.MoveOrganism(this, newPosition);
+            }
           } else {
-            this->Collision(this); // Killed
+            this->Collision(attackerOrganism); // Killed
           }
         }
       }

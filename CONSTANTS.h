@@ -1,8 +1,18 @@
 #pragma once
 
 #define NEWLINE '\n'
+
 #define PLANT_INITIATIVE 0
 #define SPREAD_PROBABILITY 0.1
+
+#define HUMAN_SUPER_POWER_DURATION 5
+#define HUMAN_SUPER_POWER_COOLDOWN 5
+
+#define HUMAN_SYMBOL 'P'
+#define HUMAN_STRENGTH 20
+#define HUMAN_INITIATIVE 4
+#define HUMAN_COLOR "\033[37;41m"
+#define HUMAN_NAME "Human"
 
 #define GRASS_SYMBOL 'G'
 #define GRASS_STRENGTH 0
@@ -35,7 +45,7 @@
 #define WOLF_COLOR "\033[37m"
 #define WOLF_NAME "Wolf"
 
-#define SHEEP_SYMBOL 'S'
+#define SHEEP_SYMBOL 'E'
 #define SHEEP_STRENGTH 4
 #define SHEEP_INITIATIVE 4
 #define SHEEP_COLOR "\033[36m"
@@ -56,7 +66,7 @@
 #define ANTELOPE_SYMBOL 'A'
 #define ANTELOPE_STRENGTH 4
 #define ANTELOPE_INITIATIVE 4
-#define ANTELOPE_COLOR "\033[32;42m"
+#define ANTELOPE_COLOR "\033[34;47m"
 #define ANTELOPE_NAME "Antelope"
 
 #define CYBER_SHEEP_SYMBOL 'C'

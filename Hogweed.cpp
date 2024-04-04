@@ -25,12 +25,10 @@ void Hogweed::Action() {
 bool Hogweed::Collision(Organism *attackerOrganism) {
   this->Die();
   this->world.messageManager.AddPlantEatingMessage(this->GetName(), attackerOrganism->GetName());
-  if(attackerOrganism->GetSymbol() == CYBER_SHEEP_SYMBOL) {
-    return false;
-  } else {
+  if(attackerOrganism->GetSymbol() != CYBER_SHEEP_SYMBOL) {
     attackerOrganism->Collision(this);
-    return false;
   }
+  return false;
 }
 
 Organism* Hogweed::Clone(const Point &position) {

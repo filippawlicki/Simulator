@@ -2,12 +2,18 @@
 #include "World.h"
 #include "GameManager.h"
 
+#include "Antelope.h"
+#include "Sheep.h"
+#include "Turtle.h"
+#include "Fox.h"
 #include "Grass.h"
 #include "SowThistle.h"
 #include "Guarana.h"
 #include "Wolf.h"
 #include "CyberSheep.h"
 #include "Hogweed.h"
+#include "Human.h"
+#include "NightshadeBerries.h"
 
 #include "conio.h"
 #include "windows.h"
@@ -31,6 +37,30 @@ int menu() {
   }
 }
 
+void AddStartingOrganisms(World &world) {
+  world.AddOrganism(new Grass(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new SowThistle(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Guarana(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new NightshadeBerries(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new NightshadeBerries(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Hogweed(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Hogweed(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Hogweed(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new CyberSheep(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new CyberSheep(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Wolf(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Wolf(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Turtle(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Turtle(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Fox(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Fox(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Sheep(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Sheep(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Antelope(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Antelope(world, world.GetRandomFreePosition()));
+  world.AddOrganism(new Human(world, world.GetRandomFreePosition()));
+}
+
 void newGame() {
   system("cls");
   int width, height;
@@ -45,6 +75,10 @@ void newGame() {
     try {
       width = std::stoi(widthString);
       height = std::stoi(heightString);
+      if(width * height < 21) {
+        std::cout << "The Board is Too Small, Please Try Again." << NEWLINE;
+        continue;
+      }
       break;
     } catch (const std::invalid_argument& e) {
       std::cout << "Invalid Input, Please Try Again." << NEWLINE;
@@ -55,15 +89,7 @@ void newGame() {
   sleep(2);
   World& worldInstance = World::GetInstance(width, height);
   GameManager gameManager(worldInstance);
-  worldInstance.AddOrganism(new Grass(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new SowThistle(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Guarana(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Wolf(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new CyberSheep(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
-  worldInstance.AddOrganism(new Hogweed(worldInstance, worldInstance.GetRandomFreePosition()));
+  AddStartingOrganisms(worldInstance);
   gameManager.GameLoop();
 }
 

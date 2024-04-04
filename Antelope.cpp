@@ -22,11 +22,11 @@ void Antelope::Action() {
         } else {
           if (this->GetStrength() >= attackerOrganism->GetStrength()) {
             bool takenField = attackerOrganism->Collision(this); // Kill
-            if(!takenField) {
+            if(!takenField && attackerOrganism->GetSymbol() != HOGWEED_SYMBOL && attackerOrganism->GetSymbol() != NIGHTSHADE_BERRIES_SYMBOL) {
               this->world.MoveOrganism(this, newPosition);
             }
           } else {
-            this->Collision(this); // Killed
+            this->Collision(attackerOrganism); // Killed
           }
         }
       }

@@ -8,8 +8,8 @@ private:
   bool quit;
   
   //void PrintTheWorld();
-  void PrintMessages();
   char GetPlayerInput();
+  void ExecutePlayerInput();
 public:
   GameManager(World &world);
   ~GameManager();

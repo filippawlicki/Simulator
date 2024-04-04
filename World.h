@@ -10,6 +10,10 @@ private:
   int width;
   int height;
 
+  char humanInput;
+  int humanSuperPowerCooldown;
+  int humanSuperPowerDuration;
+
   Organism*** worldMap; // 2D array for every square
   std::vector<Organism*> organisms; // Vector for every organism
 
@@ -28,6 +32,7 @@ public:
   bool IsPositionFree(const Point &position) const;
   bool IsPositionWithinBounds(const Point &position) const;
   bool IsAnyPositionFree() const;
+  bool IsHumanMoveLegal(const char &input) const;
   std::vector<Point> GetPositionsAround(const Point &position) const;
 
   Point GetRandomFreePosition() const;
@@ -45,4 +50,17 @@ public:
 
   int GetWidth() const;
   int GetHeight() const;
+
+  char GetHumanInput() const;
+  void SetHumanInput(const char &input);
+
+  int GetHumanSuperPowerCooldown() const;
+  void SetHumanSuperPowerCooldown(const int &cooldown);
+
+  int GetHumanSuperPowerDuration() const;
+  void SetHumanSuperPowerDuration(const int &duration);
+
+  bool IsHumanDead() const;
+
+  void HandleSuperPower();
 };

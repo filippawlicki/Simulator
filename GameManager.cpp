@@ -16,6 +16,30 @@ bool GameManager::Quit() const {
 
 void GameManager::PrintTheWorld() {
   system("cls");
+  // Info
+  std::cout << "Q - Quit, S - Save Game, Space - Make Turn" << NEWLINE;
+  std::cout << "Arrows - Move Human";
+  if(world.GetHumanInput() == 'U') {
+    std::cout << " (Your Move - Up), ";
+  } else if(world.GetHumanInput() == 'D') {
+    std::cout << " (Your Move - Down), ";
+  } else if(world.GetHumanInput() == 'L') {
+    std::cout << " (Your Move - Left), ";
+  } else if(world.GetHumanInput() == 'R') {
+    std::cout << " (Your Move - Right), ";
+  } else {
+    std::cout << ", ";
+  }
+  std::cout << "X - Super Power";
+  if(world.GetHumanSuperPowerDuration() > 0) {
+    std::cout << " (Active - " << world.GetHumanSuperPowerDuration() << " Turns Left)";
+  } else if (world.GetHumanSuperPowerCooldown() == 0) {
+    std::cout << " (Ready)";
+  } else {
+    std::cout << " (Inactive - " << world.GetHumanSuperPowerCooldown() << " Turns Left)";
+  }
+  std::cout << NEWLINE;
+  // Board
   int height = world.GetHeight();
   int width = world.GetWidth();
   Organism ***worldMap = world.GetMapOfTheWorld();
@@ -34,10 +58,14 @@ void GameManager::PrintTheWorld() {
     std::cout << "|" << NEWLINE;
   }
   std::cout << "+" << std::string(width, '-') << "+" << NEWLINE;
+  // Messages
   world.messageManager.PrintMessages();
 }
 
 char GameManager::GetPlayerInput() {
+  while (kbhit()) { // Clear the buffer
+    getch();
+  }
   int input;
   do {
     input = getch();
@@ -57,23 +85,64 @@ char GameManager::GetPlayerInput() {
           input = 'R';
           break;
       }
-    } else if (input == 120) {
-      return 'x';
     }
-  } while (input != 'U' && input != 'D' && input != 'L' && input != 'R');
+  } while (input != 'U' && input != 'D' && input != 'L' && input != 'R' && input != 'x' && input != 'q' && input != 's' && input != 32);
   return char(input);
+}
+
+void GameManager::ExecutePlayerInput() {
+  char input;
+  bool print = true, legalMove = false, makeTurn = false;
+  while(!makeTurn && !quit && (world.GetHumanInput() != 'U' || world.GetHumanInput() != 'D' || world.GetHumanInput() != 'L' || world.GetHumanInput() != 'R')){
+    if(print)
+      PrintTheWorld();
+    input = GetPlayerInput();
+    if(input == 'q') { // Quit
+      quit = true;
+    } else if(input == 's') { // Save game
+      // Save game
+      print = false;
+    } else if(input == 'x') { // Super Power
+      if(world.GetHumanSuperPowerCooldown() == 0) {
+        world.SetHumanSuperPowerDuration(HUMAN_SUPER_POWER_DURATION);
+        world.SetHumanSuperPowerCooldown(HUMAN_SUPER_POWER_COOLDOWN);
+        print = true;
+      }
+    } else if(input == 'U' || input == 'D' || input == 'L' || input == 'R') { // Arrows
+      if(world.IsHumanMoveLegal(input)) {
+        world.SetHumanInput(input);
+        legalMove = true;
+        print = true;
+      } else {
+        std::cout << "Illegal Move" << NEWLINE;
+        legalMove = false;
+        print = false;
+      }
+    } else if (input == 32) { // Make Turn
+      if(legalMove) {
+        makeTurn = true;
+      }
+    } else {
+      print = false;
+    }
+  }
 }
 
 void GameManager::GameLoop() {
   quit = false;
-  while (!quit) {
-    PrintTheWorld();
-    char input = GetPlayerInput();
-    if(input == 'x') {
-      quit = true;
-      break;
-    }
-    world.MakeTurn();
-    // PrintMessages();
+  while (!quit && !world.IsHumanDead()) {
+    world.SetHumanInput(' '); // No move
+    ExecutePlayerInput();
+    if(!quit)
+      world.MakeTurn();
   }
+  PrintTheWorld();
+  std::cout << "Game Over" << NEWLINE;
+  if(quit) {
+    std::cout << "You quit the game" << NEWLINE;
+  } else {
+    std::cout << "You died" << NEWLINE;
+  }
+  std::cout << "Press any key to continue..." << NEWLINE;
+  getch();
 }

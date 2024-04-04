@@ -1,3 +1,4 @@
+#include "CONSTANTS.h"
 #include "World.h"
 #include <stdlib.h>
 
@@ -13,6 +14,9 @@ World::World(const int &w, const int &h) : width(w), height(h) {
       worldMap[i][j] = nullptr; // Initialize each element to nullptr
     }
   }
+
+  humanSuperPowerCooldown = 0;
+  humanSuperPowerDuration = -1;
 }
 
 World::~World() {
@@ -58,6 +62,7 @@ Organism*** World::GetMapOfTheWorld() const {
 
 void World::MakeTurn() {
   messageManager.ClearMessages();
+  HandleSuperPower();
   std::vector<Organism*> organismsToSort = organisms;
   std::sort(organismsToSort.begin(), organismsToSort.end(), [](Organism *a, Organism *b) {
     if (a->GetInitiative() == b->GetInitiative()) {
@@ -73,6 +78,10 @@ void World::MakeTurn() {
   }
   for (Organism *organism : organisms) {
     organism->IncrementAge();
+  }
+  SetHumanSuperPowerDuration(std::max(-1, GetHumanSuperPowerDuration() - 1));
+  if(GetHumanSuperPowerDuration() == -1) {
+    SetHumanSuperPowerCooldown(std::max(0, GetHumanSuperPowerCooldown() - 1));
   }
 }
 
@@ -145,6 +154,36 @@ bool World::IsAnyPositionFree() const {
   return false;
 }
 
+bool World::IsHumanMoveLegal(const char &input) const {
+  Point humanPosition;
+  for(int i = 0; i < width; i++) {
+    for(int j = 0; j < height; j++) {
+      if(worldMap[i][j] != nullptr && worldMap[i][j]->GetSymbol() == HUMAN_SYMBOL) {
+        humanPosition = GetOrganismAt(i, j)->GetPosition();
+        break;
+      }
+    }
+  }
+  Point newPosition = humanPosition;
+  switch(input) {
+    case 'U':
+      newPosition.SetY(humanPosition.GetY() - 1);
+      break;
+    case 'D':
+      newPosition.SetY(humanPosition.GetY() + 1);
+      break;
+    case 'L':
+      newPosition.SetX(humanPosition.GetX() - 1);
+      break;
+    case 'R':
+      newPosition.SetX(humanPosition.GetX() + 1);
+      break;
+    default:
+      return false;
+  }
+  return IsPositionWithinBounds(newPosition);
+}
+
 void World::AddOrganism(Organism *organism) {
   worldMap[organism->GetPosition().GetX()][organism->GetPosition().GetY()] = organism;
   organisms.push_back(organism);
@@ -206,4 +245,53 @@ Point World::GetRandomPositionForChild(const Point &positionA, const Point &posi
     return positions[0];
   }
   return positionA; // If no free position was found, return the original positionA
+}
+
+char World::GetHumanInput() const {
+  return humanInput;
+}
+
+void World::SetHumanInput(const char &input) {
+  humanInput = input;
+}
+
+int World::GetHumanSuperPowerCooldown() const {
+  return humanSuperPowerCooldown;
+}
+
+void World::SetHumanSuperPowerCooldown(const int &cooldown) {
+  humanSuperPowerCooldown = cooldown;
+}
+
+int World::GetHumanSuperPowerDuration() const {
+  return humanSuperPowerDuration;
+}
+
+void World::SetHumanSuperPowerDuration(const int &duration) {
+  humanSuperPowerDuration = duration;
+}
+
+bool World::IsHumanDead() const {
+  for(Organism *organism : organisms) {
+    if(organism->GetSymbol() == HUMAN_SYMBOL) {
+      return false;
+    }
+  }
+  return true;
+}
+
+void World::HandleSuperPower() {
+  if(humanSuperPowerCooldown == 5 && humanSuperPowerDuration == 5) { // Increase the strength of human
+    for(Organism *organism : organisms) {
+      if(organism->GetSymbol() == HUMAN_SYMBOL) {
+        organism->SetStrength(organism->GetStrength() + 5);
+      }
+    }
+  } else if(humanSuperPowerDuration >= 0) { // Lower the strength of human
+    for(Organism *organism : organisms) {
+      if(organism->GetSymbol() == HUMAN_SYMBOL) {
+        organism->SetStrength(organism->GetStrength() - 1);
+      }
+    }
+  }
 }
