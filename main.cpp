@@ -98,7 +98,7 @@ void loadGame() {
   std::cout << "Enter the name of the save file: " << NEWLINE;
   std::string fileName;
   std::cin >> fileName;
-  fileName = "SAVES/" + fileName; // Add the directory path
+  fileName = "SAVES/" + fileName + ".txt"; // Add the directory path
 
   std::ifstream file(fileName);
   if (!file.is_open()) {
@@ -119,7 +119,6 @@ void loadGame() {
     std::string organismType;
     int x, y, strength;
     file >> x >> y >> organismType >> strength;
-
     // Create the organism based on its type and add it to the world
     Organism* organism;
     if (organismType[0] == GRASS_SYMBOL) {
@@ -159,7 +158,6 @@ void loadGame() {
 
   // Close the file
   file.close();
-
   // Start the game loop
   gameManager.GameLoop();
 }

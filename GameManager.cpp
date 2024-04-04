@@ -108,6 +108,7 @@ void GameManager::ExecutePlayerInput() {
       if (saveFile.is_open()) {
         // Save world state
         saveFile << world.GetHeight() << " " << world.GetWidth() << "\n";
+        saveFile << world.GetOrganisms().size() << "\n"; // Count of organisms
         Organism ***worldMap = world.GetMapOfTheWorld();
         for (int y = 0; y < world.GetHeight(); y++) {
           for (int x = 0; x < world.GetWidth(); x++) {
@@ -160,11 +161,10 @@ void GameManager::GameLoop() {
       world.MakeTurn();
   }
   PrintTheWorld();
-  std::cout << "Game Over" << NEWLINE;
   if(quit) {
     std::cout << "You quit the game" << NEWLINE;
   } else {
-    std::cout << "You died" << NEWLINE;
+    std::cout << "Game Over, You died" << NEWLINE;
   }
   std::cout << "Press any key to continue..." << NEWLINE;
   getch();

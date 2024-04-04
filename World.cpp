@@ -60,6 +60,10 @@ Organism*** World::GetMapOfTheWorld() const {
   return worldMap;
 }
 
+std::vector<Organism*> World::GetOrganisms() const {
+  return organisms;
+}
+
 void World::MakeTurn() {
   messageManager.ClearMessages();
   HandleSuperPower();

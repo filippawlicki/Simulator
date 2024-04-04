@@ -28,6 +28,7 @@ public:
   Organism* GetOrganismAt(const int &x, const int &y) const;
   Organism* GetOrganismAt(const Point &position) const;
   Organism*** GetMapOfTheWorld() const;
+  std::vector<Organism*> GetOrganisms() const;
 
   bool IsPositionFree(const Point &position) const;
   bool IsPositionWithinBounds(const Point &position) const;
