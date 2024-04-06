@@ -1,6 +1,7 @@
 #pragma once
 
 #define NEWLINE '\n'
+#define SAVE_DIR "SAVES/"
 
 #define PLANT_INITIATIVE 0
 #define SPREAD_PROBABILITY 0.1

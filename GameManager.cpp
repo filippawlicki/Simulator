@@ -104,7 +104,7 @@ void GameManager::ExecutePlayerInput() {
       std::string fileName;
       std::cout << "Enter the name of the file to save: ";
       std::cin >> fileName;
-      std::ofstream saveFile("SAVES/" + fileName + ".txt");
+      std::ofstream saveFile(SAVE_DIR + fileName + ".txt");
       if (saveFile.is_open()) {
         // Save world state
         saveFile << world.GetHeight() << " " << world.GetWidth() << "\n";

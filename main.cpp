@@ -99,7 +99,7 @@ void loadGame() {
   std::cout << "Enter the name of the save file: " << NEWLINE;
   std::string fileName;
   std::cin >> fileName;
-  fileName = "SAVES/" + fileName + ".txt"; // Add the directory path
+  fileName = SAVE_DIR + fileName + ".txt"; // Add the directory path
 
   std::ifstream file(fileName);
   if (!file.is_open()) {
