@@ -36,7 +36,11 @@ void Human::Action() {
           this->world.MoveOrganism(this, newPosition);
         }
       } else {
-        this->Collision(attackerOrganism); // Killed
+        if(attackerOrganism->GetSymbol() == HOGWEED_SYMBOL || attackerOrganism->GetSymbol() == NIGHTSHADE_BERRIES_SYMBOL) { // Hogweed and NightshadeBerries kill the attacker, but they're also eaten
+          attackerOrganism->Collision(this);
+        } else {
+          this->Collision(attackerOrganism); // Killed
+        }
       }
     }
   }

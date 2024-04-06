@@ -6,10 +6,9 @@
 NightshadeBerries::NightshadeBerries(World &world, const Point &position) : Plant(world, position, NIGHTSHADE_BERRIES_SYMBOL, NIGHTSHADE_BERRIES_STRENGTH, NIGHTSHADE_BERRIES_COLOR, NIGHTSHADE_BERRIES_NAME) {}
 
 bool NightshadeBerries::Collision(Organism *attacker) {
-  attacker->Collision(this);
-  this->Die();
   this->world.messageManager.AddPlantEatingMessage(this->GetName(), attacker->GetName());
-  this->world.messageManager.AddDeathMessage(attacker->GetName(), this->GetName());
+  this->Die();
+  attacker->Collision(this);
   return false;
 }
 

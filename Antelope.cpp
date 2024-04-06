@@ -26,7 +26,11 @@ void Antelope::Action() {
               this->world.MoveOrganism(this, newPosition);
             }
           } else {
-            this->Collision(attackerOrganism); // Killed
+            if(attackerOrganism->GetSymbol() == HOGWEED_SYMBOL || attackerOrganism->GetSymbol() == NIGHTSHADE_BERRIES_SYMBOL) { // Hogweed and NightshadeBerries kill the attacker, but they're also eaten
+              attackerOrganism->Collision(this);
+            } else {
+              this->Collision(attackerOrganism); // Killed
+            }
           }
         }
       }
@@ -39,14 +43,18 @@ bool Antelope::Collision(Organism *attackerOrganism) {
     this->Breed(attackerOrganism);
     return true;
   } else {
-    if (rand() % 2 == 0 && dynamic_cast<Animal*>(attackerOrganism) != nullptr) {
+    if (rand() % 2 == 0 && dynamic_cast<Animal*>(attackerOrganism) != nullptr) { // 50% chance to escape from the animal
       Point newPosition = this->world.GetRandomPositionAround(this->GetPosition(), true, 1);
       if (newPosition != this->GetPosition()) {
+        this->world.messageManager.AddAttackRunawayMessage(attackerOrganism->GetName(), this->GetName());
         this->world.MoveOrganism(this, newPosition);
       } else {
         this->Die();
         this->world.messageManager.AddDeathMessage(this->GetName(), attackerOrganism->GetName());
       }
+    } else { // Die from plant or failed escape
+      this->Die();
+      this->world.messageManager.AddDeathMessage(this->GetName(), attackerOrganism->GetName());
     }
     return false;
   }

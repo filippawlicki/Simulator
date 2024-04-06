@@ -23,8 +23,8 @@ void Hogweed::Action() {
 }
 
 bool Hogweed::Collision(Organism *attackerOrganism) {
-  this->Die();
   this->world.messageManager.AddPlantEatingMessage(this->GetName(), attackerOrganism->GetName());
+  this->Die();
   if(attackerOrganism->GetSymbol() != CYBER_SHEEP_SYMBOL) {
     attackerOrganism->Collision(this);
   }

@@ -9,7 +9,7 @@
 #define HUMAN_SUPER_POWER_COOLDOWN 5
 
 #define HUMAN_SYMBOL 'P'
-#define HUMAN_STRENGTH 20
+#define HUMAN_STRENGTH 5
 #define HUMAN_INITIATIVE 4
 #define HUMAN_COLOR "\033[37;41m"
 #define HUMAN_NAME "Human"
