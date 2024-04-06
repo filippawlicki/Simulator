@@ -29,6 +29,7 @@ World::~World() {
   }
   delete[] worldMap;
   DeleteAllOrganisms();
+  DeleteOrganisms();
 }
 
 World& World::GetInstance(const int &w, const int &h) {
