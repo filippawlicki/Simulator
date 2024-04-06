@@ -27,8 +27,8 @@ World::~World() {
       }
       delete[] worldMap[i];
   }
-  
   delete[] worldMap;
+  DeleteAllOrganisms();
 }
 
 World& World::GetInstance(const int &w, const int &h) {
@@ -64,6 +64,20 @@ std::vector<Organism*> World::GetOrganisms() const {
   return organisms;
 }
 
+void World::DeleteOrganisms() {
+  for(Organism* organism : organismsToRemove) {
+    delete organism;
+  }
+  organismsToRemove.clear();
+}
+
+void World::DeleteAllOrganisms() {
+  for(Organism* organism : organisms) {
+    delete organism;
+  }
+  organisms.clear();
+}
+
 void World::MakeTurn() {
   messageManager.ClearMessages();
   HandleSuperPower();
@@ -87,6 +101,7 @@ void World::MakeTurn() {
   if(GetHumanSuperPowerDuration() == -1) {
     SetHumanSuperPowerCooldown(std::max(0, GetHumanSuperPowerCooldown() - 1));
   }
+  DeleteOrganisms();
 }
 
 Point World::GetRandomFreePosition() const {
@@ -205,6 +220,7 @@ void World::RemoveOrganism(Organism *organism) {
   Point position = organism->GetPosition();
   worldMap[position.GetX()][position.GetY()] = nullptr;
   organisms.erase(std::remove(organisms.begin(), organisms.end(), organism), organisms.end());
+  organismsToRemove.push_back(organism);
 }
 
 void World::MoveOrganism(Organism *organism, const Point &newPosition) {

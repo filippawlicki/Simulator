@@ -161,6 +161,7 @@ void GameManager::GameLoop() {
       world.MakeTurn();
   }
   PrintTheWorld();
+  delete &world;
   if(quit) {
     std::cout << "You quit the game" << NEWLINE;
   } else {

@@ -2,7 +2,9 @@
 
 MessageManager::MessageManager() {}
 
-MessageManager::~MessageManager() {}
+MessageManager::~MessageManager() {
+  messages.clear();
+}
 
 void MessageManager::AddDeathMessage(const std::string &dead, const std::string &killer) {
   messages.push_back(dead + " died from " + killer + ".");

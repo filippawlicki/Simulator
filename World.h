@@ -16,6 +16,7 @@ private:
 
   Organism*** worldMap; // 2D array for every square
   std::vector<Organism*> organisms; // Vector for every organism
+  std::vector<Organism*> organismsToRemove; // Vector for every organism to be removed
 
   World(const int &w, const int &h);
 public:
@@ -29,6 +30,9 @@ public:
   Organism* GetOrganismAt(const Point &position) const;
   Organism*** GetMapOfTheWorld() const;
   std::vector<Organism*> GetOrganisms() const;
+
+  void DeleteOrganisms();
+  void DeleteAllOrganisms();
 
   bool IsPositionFree(const Point &position) const;
   bool IsPositionWithinBounds(const Point &position) const;
