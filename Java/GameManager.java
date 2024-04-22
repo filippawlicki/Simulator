@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 public class GameManager {
   private World world;
@@ -39,7 +40,14 @@ public class GameManager {
     // Create a text area for the game information
     gameInfo = new JTextArea();
     gameInfo.setColumns(25);
-    gameInfo.setEditable(true); // Make the text area modifiable
+    gameInfo.setEditable(false); // Make the text area not modifiable
+    Vector<String> messages = world.messageManager.GetMessages();
+    if(messages != null) {
+      for (String message : messages) {
+        gameInfo.append(message + "\n"); // Add the message to the text area
+      }
+    }
+
 
     // Add the text area to the right side of the frame
     f.add(new JScrollPane(gameInfo), BorderLayout.EAST);
@@ -52,7 +60,7 @@ public class GameManager {
     for (int y = 0; y < world.GetHeight(); y++) {
       for (int x = 0; x < world.GetWidth(); x++) {
         JButton button = new JButton();
-        Organism organism = world.GetOrganism(x, y);
+        Organism organism = world.GetOrganismAt(x, y);
         if (organism != null) {
           button.setText(String.valueOf(organism.GetSymbol()));
           button.setBackground(organism.GetColor());

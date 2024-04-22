@@ -2,7 +2,14 @@ import javax.swing.*;
 
 public class Main {
 
-  private static void NewGame() {
+  private void AddStartingOrganisms(World world) {
+    world.AddOrganism(new Grass(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Grass(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Wolf(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Wolf(world, world.GetRandomFreePosition()));
+  }
+
+  private void NewGame() {
     JFrame f=new JFrame();
     f.setSize(400,500);
     f.setLayout(null);
@@ -49,12 +56,13 @@ public class Main {
       int height = Integer.parseInt(heightTextField.getText());
       f.setVisible(false);
       World world = World.GetInstance(width, height);
+      this.AddStartingOrganisms(world);
       GameManager gameManager = new GameManager(world);
       gameManager.GameLoop();
     });
 
   }
-  private static void Menu() {
+  private void Menu() {
     JFrame f=new JFrame();
 
     JButton newGameButton=new JButton("New Game");
@@ -75,7 +83,7 @@ public class Main {
 
     newGameButton.addActionListener(e -> {
       f.setVisible(false);
-      NewGame();
+      this.NewGame();
     });
 
     loadGameButton.addActionListener(e -> {
@@ -87,6 +95,7 @@ public class Main {
     });
   }
   public static void main(String[] args) {
-    Menu();
+    Main mainObject = new Main();
+    mainObject.Menu();
   }
 }

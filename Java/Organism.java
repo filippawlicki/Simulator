@@ -7,9 +7,10 @@ public abstract class Organism {
   private int initiative;
   private boolean canAction;
   private Color color;
+  private String name;
   protected World world;
 
-  public Organism(World world, Point position, char symbol, int strength, int initiative, Color color) {
+  public Organism(World world, Point position, char symbol, int strength, int initiative, Color color, String name) {
     this.world = world;
     this.position = position;
     this.symbol = symbol;
@@ -26,6 +27,8 @@ public abstract class Organism {
   public char GetSymbol() {
     return symbol;
   }
+
+  public String GetName() { return name; }
 
   public Color GetColor() {
     return color;
@@ -61,6 +64,10 @@ public abstract class Organism {
   }
   public void SetCanAction(boolean canAction) {
     this.canAction = canAction;
+  }
+
+  public void Die() {
+    this.world.RemoveOrganism(this);
   }
 
   public abstract Organism Clone(Point position);
