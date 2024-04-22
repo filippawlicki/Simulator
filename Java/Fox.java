@@ -1,29 +1,28 @@
-import java.awt.*;
-
-public abstract class Animal extends Organism {
-
-  private final int moveRange;
-  public Animal(World world, Point position, char symbol, int strength, int initiative, Color color, String name, int moveRange) {
-    super(world, position, symbol, strength, initiative, color, name);
-    this.moveRange = moveRange;
+import java.util.Vector;
+import java.util.Collections;
+public class Fox extends Animal {
+  public Fox(World world, Point position) {
+    super(world, position, Constants.FOX_SYMBOL, Constants.FOX_STRENGTH, Constants.FOX_INITIATIVE, Constants.FOX_COLOR, Constants.FOX_NAME, Constants.ANIMAL_RANGE);
   }
 
   @Override
-  public boolean Collision(Organism other) {
-    if(this.GetSymbol() == other.GetSymbol()) {
-      this.Breed(other);
-      return true;
-    } else {
-      this.Die();
-      this.world.messageManager.AddDeathMessage(this.GetName(), other.GetName());
-      return false;
-    }
+  public Organism Clone(Point position) {
+    return new Fox(this.world, position);
   }
 
   @Override
   public void Action() {
-    if(CanAction()) {
-      Point newPosition = world.GetRandomPositionAround(this.GetPosition(), false, moveRange);
+    if (CanAction()) {
+      Vector<Point> possibleMoves = this.world.GetPositionsAround(this.GetPosition());
+      Collections.shuffle(possibleMoves);
+      Point newPosition = null;
+      for (Point move : possibleMoves) {
+        Organism other = world.GetOrganismAt(move);
+        if (other == null || other.GetStrength() < this.GetStrength()) {
+          newPosition = move;
+          break;
+        }
+      }
       if (newPosition != null) {
         Organism other = world.GetOrganismAt(newPosition);
         if (other == null) {
@@ -47,15 +46,6 @@ public abstract class Animal extends Organism {
           }
         }
       }
-    }
-  }
-
-  public void Breed(Organism other) {
-    Point newPosition = world.GetRandomPositionForChild(this.GetPosition(), other.GetPosition());
-    if (newPosition != null) {
-      Organism newOrganism = this.Clone(newPosition);
-      this.world.messageManager.AddReproductionMessage(this.GetName(), other.GetName(), newOrganism.GetName());
-      world.AddOrganism(newOrganism);
     }
   }
 }

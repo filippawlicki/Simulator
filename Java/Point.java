@@ -1,6 +1,6 @@
 public class Point {
-  private final int x;
-  private final int y;
+  private int x;
+  private int y;
 
   public Point(int x, int y) {
     this.x = x;
@@ -10,8 +10,14 @@ public class Point {
   public int GetX() {
     return x;
   }
+  public void SetX(int x) {
+    this.x = x;
+  }
 
   public int GetY() {
     return y;
+  }
+  public void SetY(int y) {
+    this.y = y;
   }
 }

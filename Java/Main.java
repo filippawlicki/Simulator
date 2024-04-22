@@ -5,8 +5,26 @@ public class Main {
   private void AddStartingOrganisms(World world) {
     world.AddOrganism(new Grass(world, world.GetRandomFreePosition()));
     world.AddOrganism(new Grass(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new SowThistle(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new SowThistle(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Guarana(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Guarana(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new NightshadeBerries(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new NightshadeBerries(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Hogweed(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Hogweed(world, world.GetRandomFreePosition()));
     world.AddOrganism(new Wolf(world, world.GetRandomFreePosition()));
     world.AddOrganism(new Wolf(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Sheep(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Sheep(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Fox(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Fox(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Turtle(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Turtle(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Antelope(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Antelope(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new CyberSheep(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new CyberSheep(world, world.GetRandomFreePosition()));
   }
 
   private void NewGame() {

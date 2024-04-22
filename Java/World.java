@@ -129,6 +129,19 @@ public class World {
     return newPosition; // Return null if no position is found
   }
 
+  public Vector<Point> GetPositionsAround(Point position) {
+    int x = position.GetX();
+    int y = position.GetY();
+    Vector<Point> positionsAround = new Vector<>(Arrays.asList(
+      new Point(x - 1, y),
+      new Point(x + 1, y),
+      new Point(x, y - 1),
+      new Point(x, y + 1)
+    ));
+    positionsAround.removeIf(p -> !IsPositionWithinBounds(p));
+    return positionsAround;
+  }
+
   public Point GetRandomFreePosition() {
     if(!IsAnyPositionFree()) {
       return null;
@@ -144,5 +157,20 @@ public class World {
     mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
     organismsList.remove(organism);
     organismsToRemove.add(organism);
+  }
+
+  public Point FindNearestOrganism(Point position, char symbol) {
+    Point nearest = null;
+    int minDistance = Integer.MAX_VALUE;
+    for (Organism organism : organismsList) {
+      if (organism.GetSymbol() == symbol) {
+        int distance = Math.abs(organism.GetPosition().GetX() - position.GetX()) + Math.abs(organism.GetPosition().GetY() - position.GetY());
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearest = organism.GetPosition();
+        }
+      }
+    }
+    return nearest;
   }
 }
