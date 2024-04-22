@@ -46,11 +46,11 @@ public class GameManager {
 
     // Create a panel for the game grid
     JPanel gridPanel = new JPanel();
-    gridPanel.setLayout(new GridLayout(world.GetWidth(), world.GetHeight()));
+    gridPanel.setLayout(new GridLayout(world.GetHeight(), world.GetWidth()));
     buttons = new JButton[world.GetWidth()][world.GetHeight()];
 
-    for (int x = 0; x < world.GetWidth(); x++) {
-      for (int y = 0; y < world.GetHeight(); y++) {
+    for (int y = 0; y < world.GetHeight(); y++) {
+      for (int x = 0; x < world.GetWidth(); x++) {
         JButton button = new JButton();
         Organism organism = world.GetOrganism(x, y);
         if (organism != null) {
