@@ -1,12 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.Vector;
 
 public class GameManager {
   private World world;
   private boolean quit;
+  private char input;
 
   private JFrame f;
   private JButton[][] buttons;
@@ -17,6 +17,40 @@ public class GameManager {
     this.world = world;
     f = new JFrame("Simulation - Filip Pawlicki 198371");
   }
+
+  private void SetHumanInfo(JTextArea humanInfo) {
+    humanInfo.setText(""); // Clear the text area
+    switch(input) {
+      case 'U':
+        humanInfo.append("Up move selected");
+        break;
+      case 'D':
+        humanInfo.append("Down move selected");
+        break;
+      case 'R':
+        humanInfo.append("Right move selected");
+        break;
+      case 'L':
+        humanInfo.append("Left move selected");
+        break;
+      default:
+        humanInfo.append("No move selected");
+        break;
+    }
+    humanInfo.append("\n");
+    humanInfo.append("Superpower: ");
+    if(world.GetHumanSuperPowerDuration() > 0) {
+      humanInfo.append("Active - " + world.GetHumanSuperPowerDuration() + " turns left");
+    } else if (world.GetHumanSuperPowerCooldown() == 0) {
+      humanInfo.append("Ready");
+    } else {
+      humanInfo.append("Cooldown - " + world.GetHumanSuperPowerCooldown() + " turns left");
+    }
+  }
+
+  private void SaveGame() {
+    // Save the game
+  }
   private void PrintTheWorld() {
     f.setLayout(new BorderLayout());
 
@@ -24,15 +58,94 @@ public class GameManager {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
 
+    f.addKeyListener(new KeyAdapter() { // Add a key listener to the frame to get the input
+      @Override
+      public void keyPressed(KeyEvent e) {
+        switch(e.getKeyCode()) {
+          case KeyEvent.VK_UP:
+            input = 'U';
+            world.SetHumanInput(input);
+            f.revalidate();
+            f.repaint();
+            break;
+          case KeyEvent.VK_DOWN:
+            input = 'D';
+            world.SetHumanInput(input);
+            f.revalidate();
+            f.repaint();
+            break;
+          case KeyEvent.VK_LEFT:
+            input = 'L';
+            world.SetHumanInput(input);
+            f.revalidate();
+            f.repaint();
+            break;
+          case KeyEvent.VK_RIGHT:
+            input = 'R';
+            world.SetHumanInput(input);
+            f.revalidate();
+            f.repaint();
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
     // Create the buttons and add them to the panel
     JButton saveButton = new JButton("Save");
     buttonPanel.add(saveButton);
+    saveButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        SaveGame();
+      }
+    });
 
     JButton quitButton = new JButton("Quit");
     buttonPanel.add(quitButton);
+    quitButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.exit(0);
+      }
+    });
 
     JButton superpowerButton = new JButton("Use Superpower");
     buttonPanel.add(superpowerButton);
+    superpowerButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(world.GetHumanSuperPowerCooldown() == 0) {
+          world.SetHumanSuperPowerDuration(Constants.HUMAN_SUPERPOWER_DURATION);
+          world.SetHumanSuperPowerCooldown(Constants.HUMAN_SUPERPOWER_COOLDOWN);
+          f.revalidate();
+          f.repaint();
+        }
+      }
+    });
+
+    JButton nextTurnButton = new JButton("Next Turn");
+    buttonPanel.add(nextTurnButton);
+    nextTurnButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(world.IsHumanMoveLegal(input)) {
+          world.MakeTurn();
+          f.revalidate();
+          f.repaint();
+        } else {
+          JOptionPane.showMessageDialog(f, "Invalid move");
+        }
+      }
+    });
+
+    JTextArea humanInfo = new JTextArea();
+    humanInfo.setRows(2);
+    humanInfo.setColumns(25);
+    humanInfo.setEditable(false);
+    SetHumanInfo(humanInfo);
+    buttonPanel.add(humanInfo);
 
     // Add the panel to the top of the frame
     f.add(buttonPanel, BorderLayout.NORTH);

@@ -1,24 +1,20 @@
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
 public class World {
   private static World instance;
   private int width;
   private int height;
+  private char humanInput;
+  private int humanSuperPowerDuration;
+  private int humanSuperPowerCooldown;
 
   private Organism[][] mapOfTheWorld;
   private Vector<Organism> organismsList;
   private Vector<Organism> organismsToRemove;
   public MessageManager messageManager = new MessageManager();
-
-
-  public int GetWidth() {
-    return width;
-  }
-
-  public int GetHeight() {
-    return height;
-  }
 
   private World(final int width, int height) { // Private constructor
     this.width = width;
@@ -31,6 +27,17 @@ public class World {
     }
     organismsList = new Vector<>(); // Initialize the Vector
     organismsToRemove = new Vector<>(); // Initialize the Vector
+    humanSuperPowerCooldown = 0;
+    humanSuperPowerDuration = -1;
+  }
+
+
+  public int GetWidth() {
+    return width;
+  }
+
+  public int GetHeight() {
+    return height;
   }
 
   public static World GetInstance(int w, int h) { // Singleton pattern
@@ -154,8 +161,6 @@ public class World {
   }
 
   public void RemoveOrganism(Organism organism) {
-    mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
-    organismsList.remove(organism);
     organismsToRemove.add(organism);
   }
 
@@ -173,4 +178,118 @@ public class World {
     }
     return nearest;
   }
+
+  public char GetHumanInput() {
+    return humanInput;
+  }
+
+  public void SetHumanInput(char input) {
+    humanInput = input;
+  }
+
+  public void SetHumanSuperPowerDuration(int duration) {
+    humanSuperPowerDuration = duration;
+  }
+
+  public void SetHumanSuperPowerCooldown(int cooldown) {
+    humanSuperPowerCooldown = cooldown;
+  }
+
+  public int GetHumanSuperPowerDuration() {
+    return humanSuperPowerDuration;
+  }
+
+  public int GetHumanSuperPowerCooldown() {
+    return humanSuperPowerCooldown;
+  }
+
+  public void HandleSuperPower() {
+    if(humanSuperPowerCooldown == 5 && humanSuperPowerDuration == 5) { // Increase the strength of human
+      for(Organism organism : organismsList) {
+        if(organism instanceof Human) {
+          organism.SetStrength(organism.GetStrength() + 5);
+        }
+      }
+    } else if(humanSuperPowerDuration >= 0) { // Lower the strength of human
+      for(Organism organism : organismsList) {
+        if(organism instanceof Human) {
+          organism.SetStrength(organism.GetStrength() - 1);
+        }
+      }
+    }
+  }
+
+  public boolean IsHumanMoveLegal(char input) {
+    Organism human = null;
+    for(Organism organism : organismsList) {
+      if(organism instanceof Human) {
+        human = organism;
+        break;
+      }
+    }
+    Point newPosition = new Point(human.GetPosition().GetX(), human.GetPosition().GetY());
+    switch(input) {
+      case 'U':
+        newPosition.SetY(newPosition.GetY() - 1);
+        break;
+      case 'D':
+        newPosition.SetY(newPosition.GetY() + 1);
+        break;
+      case 'L':
+        newPosition.SetX(newPosition.GetX() - 1);
+        break;
+      case 'R':
+        newPosition.SetX(newPosition.GetX() + 1);
+        break;
+      default:
+        break;
+    }
+    return IsPositionWithinBounds(newPosition);
+  }
+
+  public void MakeTurn() {
+    messageManager.ClearMessages();
+    HandleSuperPower();
+    organismsList.sort((o1, o2) -> {
+      // Compare initiative
+      int initiativeComparison = Integer.compare(o2.GetInitiative(), o1.GetInitiative());
+      if (initiativeComparison != 0) {
+        return initiativeComparison;
+      }
+
+      // If initiative is the same, compare age
+      return Integer.compare(o2.GetAge(), o1.GetAge());
+    });
+    Vector<Organism> organismsCopy = new Vector<>(organismsList);
+    for(Organism organism : organismsCopy) {
+      organism.SetCanAction(true);
+    }
+    for(Organism organism : organismsCopy) {
+      organism.Action();
+    }
+    for(Organism organism : organismsCopy) {
+      organism.IncrementAge();
+    }
+    for(Organism organism : organismsToRemove) { // Remove dead organisms
+      mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
+      organismsList.remove(organism);
+    }
+    organismsCopy.clear();
+    organismsToRemove.clear();
+
+    SetHumanSuperPowerDuration(Math.max(-1, GetHumanSuperPowerDuration() - 1));
+    if(GetHumanSuperPowerDuration() == -1) {
+      SetHumanSuperPowerCooldown(Math.max(0, GetHumanSuperPowerCooldown() - 1));
+    }
+  }
+
+  public boolean IsHumanDead() {
+    for(Organism organism : organismsList) {
+      if(organism instanceof Human) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }

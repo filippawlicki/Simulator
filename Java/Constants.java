@@ -4,6 +4,8 @@ public final class Constants {
   // Prevent instantiation
   private Constants() {}
 
+  public static final int HUMAN_SUPERPOWER_COOLDOWN = 5;
+  public static final int HUMAN_SUPERPOWER_DURATION = 5;
   public static final double SPREAD_PROBABILITY = 0.1;
   public static final int PLANT_INITIATIVE = 0;
 
@@ -70,4 +72,10 @@ public final class Constants {
   public static final String ANTELOPE_NAME = "Antelope";
   public static final int ANTELOPE_STRENGTH = 4;
   public static final int ANTELOPE_INITIATIVE = 4;
+
+  public static final char HUMAN_SYMBOL = 'P';
+  public static final Color HUMAN_COLOR = new Color(0, 255, 255);
+  public static final String HUMAN_NAME = "Human";
+  public static final int HUMAN_STRENGTH = 5;
+  public static final int HUMAN_INITIATIVE = 4;
 }

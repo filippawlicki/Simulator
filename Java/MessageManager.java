@@ -3,7 +3,7 @@ import java.util.Vector;
 public class MessageManager {
   private Vector<String> messages;
 
-  public void MessageManager() {
+  public MessageManager() {
     messages = new Vector<>();
   }
 
@@ -19,7 +19,7 @@ public class MessageManager {
     messages.add(eater + " ate " + eaten + ".");
   }
 
-  public void AddAttactRepelledMessage(String attacker, String defender) {
+  public void AddAttackRepelledMessage(String attacker, String defender) {
     messages.add(attacker + " attacked " + defender + " but was repelled.");
   }
 

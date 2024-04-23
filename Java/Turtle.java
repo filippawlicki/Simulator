@@ -13,7 +13,7 @@ public class Turtle extends Animal {
   @Override
   public boolean Collision(Organism other) {
     if (other.GetStrength() < 5) {
-      this.world.messageManager.AddAttactRepelledMessage(other.GetName(), this.GetName());
+      this.world.messageManager.AddAttackRepelledMessage(other.GetName(), this.GetName());
       return true;
     }
     return super.Collision(other);

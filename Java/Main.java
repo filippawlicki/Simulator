@@ -25,6 +25,7 @@ public class Main {
     world.AddOrganism(new Antelope(world, world.GetRandomFreePosition()));
     world.AddOrganism(new CyberSheep(world, world.GetRandomFreePosition()));
     world.AddOrganism(new CyberSheep(world, world.GetRandomFreePosition()));
+    world.AddOrganism(new Human(world, world.GetRandomFreePosition()));
   }
 
   private void NewGame() {
