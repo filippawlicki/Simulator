@@ -18,6 +18,8 @@ public abstract class Organism {
     this.initiative = initiative;
     this.color = color;
     this.age = 0;
+    this.canAction = false;
+    this.name = name;
   }
 
   // Returns false if organism frees the field and true if it keeps its place

@@ -18,7 +18,7 @@ public abstract class Plant extends Organism {
   @Override
   public boolean Collision(Organism other) {
     this.Die();
-    this.world.messageManager.AddPlantEatingMessage(this.GetName(), other.GetName());
+    this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());
     return false;
   }
 

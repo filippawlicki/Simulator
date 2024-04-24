@@ -11,6 +11,8 @@ public class GameManager {
   private JFrame f;
   private JButton[][] buttons;
   private JTextArea gameInfo;
+  private JTextArea humanInfo;
+  private JPanel gridPanel;
 
   public GameManager(World world) {
     this.quit = false;
@@ -58,37 +60,59 @@ public class GameManager {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
 
-    f.addKeyListener(new KeyAdapter() { // Add a key listener to the frame to get the input
+    JTextArea humanInfo = new JTextArea() {
       @Override
-      public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
-          case KeyEvent.VK_UP:
-            input = 'U';
-            world.SetHumanInput(input);
-            f.revalidate();
-            f.repaint();
-            break;
-          case KeyEvent.VK_DOWN:
-            input = 'D';
-            world.SetHumanInput(input);
-            f.revalidate();
-            f.repaint();
-            break;
-          case KeyEvent.VK_LEFT:
-            input = 'L';
-            world.SetHumanInput(input);
-            f.revalidate();
-            f.repaint();
-            break;
-          case KeyEvent.VK_RIGHT:
-            input = 'R';
-            world.SetHumanInput(input);
-            f.revalidate();
-            f.repaint();
-            break;
-          default:
-            break;
-        }
+      protected void processMouseEvent(MouseEvent e) {
+        // Do nothing
+      }
+    };
+    humanInfo.setRows(2);
+    humanInfo.setColumns(25);
+    humanInfo.setEditable(false);
+    SetHumanInfo(humanInfo);
+    buttonPanel.add(humanInfo);
+
+    // Define the action for the UP key
+    f.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "UP");
+    f.getRootPane().getActionMap().put("UP", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        input = 'U';
+        world.SetHumanInput(input);
+        SetHumanInfo(humanInfo);
+      }
+    });
+
+    // Define the action for the DOWN key
+    f.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "DOWN");
+    f.getRootPane().getActionMap().put("DOWN", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        input = 'D';
+        world.SetHumanInput(input);
+        SetHumanInfo(humanInfo);
+      }
+    });
+
+    // Define the action for the LEFT key
+    f.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "LEFT");
+    f.getRootPane().getActionMap().put("LEFT", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        input = 'L';
+        world.SetHumanInput(input);
+        SetHumanInfo(humanInfo);
+      }
+    });
+
+    // Define the action for the RIGHT key
+    f.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "RIGHT");
+    f.getRootPane().getActionMap().put("RIGHT", new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        input = 'R';
+        world.SetHumanInput(input);
+        SetHumanInfo(humanInfo);
       }
     });
 
@@ -119,47 +143,24 @@ public class GameManager {
         if(world.GetHumanSuperPowerCooldown() == 0) {
           world.SetHumanSuperPowerDuration(Constants.HUMAN_SUPERPOWER_DURATION);
           world.SetHumanSuperPowerCooldown(Constants.HUMAN_SUPERPOWER_COOLDOWN);
-          f.revalidate();
-          f.repaint();
+          SetHumanInfo(humanInfo);
         }
       }
     });
-
-    JButton nextTurnButton = new JButton("Next Turn");
-    buttonPanel.add(nextTurnButton);
-    nextTurnButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if(world.IsHumanMoveLegal(input)) {
-          world.MakeTurn();
-          f.revalidate();
-          f.repaint();
-        } else {
-          JOptionPane.showMessageDialog(f, "Invalid move");
-        }
-      }
-    });
-
-    JTextArea humanInfo = new JTextArea();
-    humanInfo.setRows(2);
-    humanInfo.setColumns(25);
-    humanInfo.setEditable(false);
-    SetHumanInfo(humanInfo);
-    buttonPanel.add(humanInfo);
 
     // Add the panel to the top of the frame
     f.add(buttonPanel, BorderLayout.NORTH);
 
     // Create a text area for the game information
-    gameInfo = new JTextArea();
+    gameInfo = new JTextArea() {
+      @Override
+      protected void processMouseEvent(MouseEvent e) {
+        // Do nothing
+      }
+    };
     gameInfo.setColumns(25);
     gameInfo.setEditable(false); // Make the text area not modifiable
-    Vector<String> messages = world.messageManager.GetMessages();
-    if(messages != null) {
-      for (String message : messages) {
-        gameInfo.append(message + "\n"); // Add the message to the text area
-      }
-    }
+    UpdateGameInfo(gameInfo);
 
 
     // Add the text area to the right side of the frame
@@ -169,6 +170,45 @@ public class GameManager {
     JPanel gridPanel = new JPanel();
     gridPanel.setLayout(new GridLayout(world.GetHeight(), world.GetWidth()));
     buttons = new JButton[world.GetWidth()][world.GetHeight()];
+
+    UpdateGameGrid(gridPanel);
+
+    // Add the grid panel to the center of the frame
+    f.add(gridPanel, BorderLayout.CENTER);
+
+    JButton nextTurnButton = new JButton("Next Turn");
+    buttonPanel.add(nextTurnButton);
+    nextTurnButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(world.IsHumanMoveLegal(input)) {
+          world.MakeTurn();
+          UpdateGameGrid(gridPanel);
+          SetHumanInfo(humanInfo);
+          UpdateGameInfo(gameInfo);
+        } else {
+          JOptionPane.showMessageDialog(f, "Invalid move");
+        }
+      }
+    });
+
+    f.pack();
+    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    f.setVisible(true);
+  }
+
+  private void UpdateGameInfo(JTextArea gameInfo) {
+    gameInfo.setText(""); // Clear the text area
+    Vector<String> messages = world.messageManager.GetMessages();
+    if(messages != null) {
+      for (String message : messages) {
+        gameInfo.append(message + "\n"); // Add the message to the text area
+      }
+    }
+  }
+
+  private void UpdateGameGrid(JPanel gridPanel) {
+    gridPanel.removeAll(); // Remove all existing buttons
 
     for (int y = 0; y < world.GetHeight(); y++) {
       for (int x = 0; x < world.GetWidth(); x++) {
@@ -184,6 +224,7 @@ public class GameManager {
           @Override
           public void actionPerformed(ActionEvent e) {
             JOptionPane.showMessageDialog(f, "Clicked: " + finalX + " , " + finalY);
+            UpdateGameGrid(gridPanel); // Refresh the game grid after clicking the button
           }
         });
         buttons[x][y] = button;
@@ -191,12 +232,8 @@ public class GameManager {
       }
     }
 
-    // Add the grid panel to the center of the frame
-    f.add(gridPanel, BorderLayout.CENTER);
-
-    f.pack();
-    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.setVisible(true);
+    gridPanel.revalidate();
+    gridPanel.repaint();
   }
 
   public void GameLoop() {

@@ -105,13 +105,9 @@ public class Main {
       this.NewGame();
     });
 
-    loadGameButton.addActionListener(e -> {
-      f.setVisible(false);
-    });
+    loadGameButton.addActionListener(e -> f.setVisible(false));
 
-    quitButton.addActionListener(e -> {
-      System.exit(0);
-    });
+    quitButton.addActionListener(e -> System.exit(0));
   }
   public static void main(String[] args) {
     Main mainObject = new Main();

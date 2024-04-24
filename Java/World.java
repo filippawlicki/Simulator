@@ -102,11 +102,11 @@ public class World {
       positionsAround.remove(randomIndex);
       if (IsPositionWithinBounds(newPosition)) {
         if (!onlyEmpty || IsPositionFree(newPosition)) { // If the position is free, or we don't care if it's free break the loop
-          break;
+          return newPosition;
         }
       }
     }
-    return newPosition; // Return null if no position is found
+    return null; // Return null if no position is found
   }
 
   public Point GetRandomPositionForChild(Point position1, Point position2) {
@@ -130,10 +130,10 @@ public class World {
       newPosition = positionsAround.get(randomIndex);
       positionsAround.remove(randomIndex);
       if (IsPositionWithinBounds(newPosition) && IsPositionFree(newPosition)) {
-        break;
+        return newPosition;
       }
     }
-    return newPosition; // Return null if no position is found
+    return null; // Return null if no position is found
   }
 
   public Vector<Point> GetPositionsAround(Point position) {
