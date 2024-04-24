@@ -62,6 +62,10 @@ public class World {
     organismsList.add(organism);
   }
 
+  public Vector<Organism> GetOrganisms() {
+    return organismsList;
+  }
+
   public void MoveOrganism(Organism organism, Point newPosition) {
     mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
     mapOfTheWorld[newPosition.GetX()][newPosition.GetY()] = organism;

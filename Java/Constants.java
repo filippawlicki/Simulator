@@ -4,6 +4,8 @@ public final class Constants {
   // Prevent instantiation
   private Constants() {}
 
+
+  public static final String SAVES_DIRECTORY = "SAVES";
   public static final int HUMAN_SUPERPOWER_COOLDOWN = 5;
   public static final int HUMAN_SUPERPOWER_DURATION = 5;
   public static final double SPREAD_PROBABILITY = 0.1;

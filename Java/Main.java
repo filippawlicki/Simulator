@@ -1,4 +1,9 @@
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 
 public class Main {
 
@@ -81,6 +86,95 @@ public class Main {
     });
 
   }
+
+  private void LoadGame(JFrame f) {
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setCurrentDirectory(new File(Constants.SAVES_DIRECTORY));
+    File selectedFile;
+
+    int result = fileChooser.showOpenDialog(f);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      selectedFile = fileChooser.getSelectedFile();
+    } else {
+      JOptionPane.showMessageDialog(f, "No file selected.");
+      return;
+    }
+    Path filePath = Path.of(selectedFile.getAbsolutePath());
+
+    try (BufferedReader reader = Files.newBufferedReader(filePath, StandardCharsets.UTF_8)) {
+      String line = reader.readLine();
+      String[] dimensions = line.split(" ");
+      int width = Integer.parseInt(dimensions[0]);
+      int height = Integer.parseInt(dimensions[1]);
+
+      World world = World.GetInstance(width, height);
+
+      line = reader.readLine();
+      int organismCount = Integer.parseInt(line);
+
+      for (int i = 0; i < organismCount; i++) {
+        line = reader.readLine();
+        String[] organismData = line.split(" ");
+        int x = Integer.parseInt(organismData[0]);
+        int y = Integer.parseInt(organismData[1]);
+        char symbol = organismData[2].charAt(0);
+        int strength = Integer.parseInt(organismData[3]);
+
+        switch (symbol) {
+          case 'W':
+            world.AddOrganism(new Wolf(world, new Point(x, y)));
+            break;
+          case 'T':
+            world.AddOrganism(new Turtle(world, new Point(x, y)));
+            break;
+          case 'E':
+            world.AddOrganism(new Sheep(world, new Point(x, y)));
+            break;
+          case 'F':
+            world.AddOrganism(new Fox(world, new Point(x, y)));
+            break;
+          case 'A':
+            world.AddOrganism(new Antelope(world, new Point(x, y)));
+            break;
+          case 'C':
+            world.AddOrganism(new CyberSheep(world, new Point(x, y)));
+            break;
+          case 'P':
+            world.AddOrganism(new Human(world, new Point(x, y)));
+            break;
+          case 'G':
+            world.AddOrganism(new Grass(world, new Point(x, y)));
+            break;
+          case 'S':
+            world.AddOrganism(new SowThistle(world, new Point(x, y)));
+            break;
+          case 'U':
+            world.AddOrganism(new Guarana(world, new Point(x, y)));
+            break;
+          case 'H':
+            world.AddOrganism(new Hogweed(world, new Point(x, y)));
+            break;
+          case 'N':
+            world.AddOrganism(new NightshadeBerries(world, new Point(x, y)));
+            break;
+        }
+        world.GetOrganismAt(x, y).SetStrength(strength);
+
+        if (symbol == 'P' && organismData.length > 4) {
+          int superPowerCooldown = Integer.parseInt(organismData[4]);
+          int superPowerDuration = Integer.parseInt(organismData[5]);
+          world.SetHumanSuperPowerCooldown(superPowerCooldown);
+          world.SetHumanSuperPowerDuration(superPowerDuration);
+        }
+      }
+
+      GameManager gameManager = new GameManager(world);
+      gameManager.GameLoop();
+
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(f, "Error loading game: " + e.getMessage());
+    }
+  }
   private void Menu() {
     JFrame f=new JFrame();
 
@@ -105,7 +199,10 @@ public class Main {
       this.NewGame();
     });
 
-    loadGameButton.addActionListener(e -> f.setVisible(false));
+    loadGameButton.addActionListener(e -> {
+      f.setVisible(false);
+      LoadGame(f);
+    });
 
     quitButton.addActionListener(e -> System.exit(0));
   }

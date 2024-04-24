@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
 import java.util.Vector;
 
 public class GameManager {
@@ -52,7 +56,40 @@ public class GameManager {
   }
 
   private void SaveGame() {
-    // Save the game
+    String fileName = JOptionPane.showInputDialog(f, "Enter the file name:");
+    if (fileName == null || fileName.trim().isEmpty()) {
+      JOptionPane.showMessageDialog(f, "Invalid file name.");
+      return;
+    }
+
+    Path filePath = Paths.get(Constants.SAVES_DIRECTORY, fileName);
+    if (Files.exists(filePath)) {
+      int result = JOptionPane.showConfirmDialog(f, "File already exists. Do you want to overwrite it?", "Confirm overwrite", JOptionPane.YES_NO_OPTION);
+      if (result != JOptionPane.YES_OPTION) {
+        return;
+      }
+    }
+
+    try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardCharsets.UTF_8, StandardOpenOption.CREATE)) {
+      writer.write(world.GetWidth() + " " + world.GetHeight());
+      writer.newLine();
+
+      Vector<Organism> organisms = world.GetOrganisms();
+      writer.write(String.valueOf(organisms.size()));
+      writer.newLine();
+
+      for (Organism organism : organisms) {
+        writer.write(organism.GetPosition().GetX() + " " + organism.GetPosition().GetY() + " " + organism.GetSymbol() + " " + organism.GetStrength());
+        if (organism instanceof Human) {
+          writer.write(" " + world.GetHumanSuperPowerCooldown() + " " + world.GetHumanSuperPowerDuration());
+        }
+        writer.newLine();
+      }
+
+      JOptionPane.showMessageDialog(f, "Game saved successfully.");
+    } catch (IOException e) {
+      JOptionPane.showMessageDialog(f, "Error saving game: " + e.getMessage());
+    }
   }
   private void PrintTheWorld() {
     f.setLayout(new BorderLayout());
