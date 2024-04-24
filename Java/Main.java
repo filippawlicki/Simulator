@@ -97,6 +97,7 @@ public class Main {
       selectedFile = fileChooser.getSelectedFile();
     } else {
       JOptionPane.showMessageDialog(f, "No file selected.");
+      System.exit(0);
       return;
     }
     Path filePath = Path.of(selectedFile.getAbsolutePath());
