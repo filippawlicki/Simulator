@@ -12,7 +12,7 @@ public class Guarana extends Plant {
   public boolean Collision(Organism other) {
     other.SetStrength(other.GetStrength() + 3);
     this.Die();
-    this.world.messageManager.AddPlantEatingMessage(this.GetName(), other.GetName());
+    this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());
     return false;
   }
 }

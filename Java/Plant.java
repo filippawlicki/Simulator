@@ -10,8 +10,10 @@ public abstract class Plant extends Organism {
 
   @Override
   public void Action() {
-    if (Math.random() < spreadChance) {
-      this.TryToSpread();
+    if(CanAction()) {
+      if (Math.random() < spreadChance) {
+        this.TryToSpread();
+      }
     }
   }
 

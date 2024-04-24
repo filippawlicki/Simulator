@@ -10,8 +10,8 @@ public class GameManager {
 
   private JFrame f;
   private JButton[][] buttons;
-  private JTextArea gameInfo;
-  private JTextArea humanInfo;
+  private JLabel gameInfo;
+  private JLabel humanInfo;
   private JPanel gridPanel;
 
   public GameManager(World world) {
@@ -20,34 +20,35 @@ public class GameManager {
     f = new JFrame("Simulation - Filip Pawlicki 198371");
   }
 
-  private void SetHumanInfo(JTextArea humanInfo) {
-    humanInfo.setText(""); // Clear the text area
+  private void SetHumanInfo(JLabel humanInfo) {
+    StringBuilder info = new StringBuilder();
     switch(input) {
       case 'U':
-        humanInfo.append("Up move selected");
+        info.append("Up move selected");
         break;
       case 'D':
-        humanInfo.append("Down move selected");
+        info.append("Down move selected");
         break;
       case 'R':
-        humanInfo.append("Right move selected");
+        info.append("Right move selected");
         break;
       case 'L':
-        humanInfo.append("Left move selected");
+        info.append("Left move selected");
         break;
       default:
-        humanInfo.append("No move selected");
+        info.append("No move selected");
         break;
     }
-    humanInfo.append("\n");
-    humanInfo.append("Superpower: ");
+    info.append("<br>");
+    info.append("Superpower: ");
     if(world.GetHumanSuperPowerDuration() > 0) {
-      humanInfo.append("Active - " + world.GetHumanSuperPowerDuration() + " turns left");
+      info.append("Active - ").append(world.GetHumanSuperPowerDuration()).append(" turns left");
     } else if (world.GetHumanSuperPowerCooldown() == 0) {
-      humanInfo.append("Ready");
+      info.append("Ready");
     } else {
-      humanInfo.append("Cooldown - " + world.GetHumanSuperPowerCooldown() + " turns left");
+      info.append("Cooldown - ").append(world.GetHumanSuperPowerCooldown()).append(" turns left");
     }
+    humanInfo.setText("<html>" + info.toString() + "</html>"); // Set the text of the JLabel
   }
 
   private void SaveGame() {
@@ -60,15 +61,8 @@ public class GameManager {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout());
 
-    JTextArea humanInfo = new JTextArea() {
-      @Override
-      protected void processMouseEvent(MouseEvent e) {
-        // Do nothing
-      }
-    };
-    humanInfo.setRows(2);
-    humanInfo.setColumns(25);
-    humanInfo.setEditable(false);
+    JLabel humanInfo = new JLabel();
+    humanInfo.setPreferredSize(new Dimension(300, 50));
     SetHumanInfo(humanInfo);
     buttonPanel.add(humanInfo);
 
@@ -152,14 +146,8 @@ public class GameManager {
     f.add(buttonPanel, BorderLayout.NORTH);
 
     // Create a text area for the game information
-    gameInfo = new JTextArea() {
-      @Override
-      protected void processMouseEvent(MouseEvent e) {
-        // Do nothing
-      }
-    };
-    gameInfo.setColumns(25);
-    gameInfo.setEditable(false); // Make the text area not modifiable
+    gameInfo = new JLabel();
+    gameInfo.setPreferredSize(new Dimension(200, 500)); // Set the preferred size
     UpdateGameInfo(gameInfo);
 
 
@@ -186,6 +174,10 @@ public class GameManager {
           UpdateGameGrid(gridPanel);
           SetHumanInfo(humanInfo);
           UpdateGameInfo(gameInfo);
+          if(world.IsHumanDead()) {
+            JOptionPane.showMessageDialog(f, "Game over\n" + world.GetHumanCauseOfDeath());
+            System.exit(0);
+          }
         } else {
           JOptionPane.showMessageDialog(f, "Invalid move");
         }
@@ -197,12 +189,69 @@ public class GameManager {
     f.setVisible(true);
   }
 
-  private void UpdateGameInfo(JTextArea gameInfo) {
-    gameInfo.setText(""); // Clear the text area
+  private void UpdateGameInfo(JLabel gameInfo) {
+    StringBuilder info = new StringBuilder();
     Vector<String> messages = world.messageManager.GetMessages();
     if(messages != null) {
       for (String message : messages) {
-        gameInfo.append(message + "\n"); // Add the message to the text area
+        info.append(message).append("<br>"); // Add the message to the string builder
+      }
+    }
+    gameInfo.setText("<html>" + info.toString() + "</html>"); // Set the text of the JLabel
+  }
+
+  private void AddNewOrganism(int x, int y) {
+    // Define the organisms
+    String[] organisms = {"Wolf", "Sheep", "Fox", "Turtle", "Antelope", "CyberSheep", "Sow Thistle", "Guarana", "Hogweed", "Nightshade Berries", "Grass"};
+
+    // Create a JComboBox with the organisms array
+    JComboBox<String> organismBox = new JComboBox<>(organisms);
+
+    // Create a panel to hold the JComboBox
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("Select an organism:"));
+    panel.add(organismBox);
+
+    // Show the dialog
+    int result = JOptionPane.showConfirmDialog(f, panel, "Add Organism", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    // If the user clicked OK, add the selected organism
+    if (result == JOptionPane.OK_OPTION) {
+      String selectedOrganism = (String) organismBox.getSelectedItem();
+      switch (selectedOrganism) {
+        case "Wolf":
+          world.AddOrganism(new Wolf(world, new Point(x, y)));
+          break;
+        case "Sheep":
+          world.AddOrganism(new Sheep(world, new Point(x, y)));
+          break;
+        case "Fox":
+          world.AddOrganism(new Fox(world, new Point(x, y)));
+          break;
+        case "Turtle":
+          world.AddOrganism(new Turtle(world, new Point(x, y)));
+          break;
+        case "Antelope":
+          world.AddOrganism(new Antelope(world, new Point(x, y)));
+          break;
+        case "CyberSheep":
+          world.AddOrganism(new CyberSheep(world, new Point(x, y)));
+          break;
+        case "Sow Thistle":
+          world.AddOrganism(new SowThistle(world, new Point(x, y)));
+          break;
+        case "Guarana":
+          world.AddOrganism(new Guarana(world, new Point(x, y)));
+          break;
+        case "Hogweed":
+          world.AddOrganism(new Hogweed(world, new Point(x, y)));
+          break;
+        case "Nightshade Berries":
+          world.AddOrganism(new NightshadeBerries(world, new Point(x, y)));
+          break;
+        case "Grass":
+          world.AddOrganism(new Grass(world, new Point(x, y)));
+          break;
       }
     }
   }
@@ -223,8 +272,12 @@ public class GameManager {
         button.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(f, "Clicked: " + finalX + " , " + finalY);
-            UpdateGameGrid(gridPanel); // Refresh the game grid after clicking the button
+            if(world.GetOrganismAt(finalX, finalY) == null) {
+              AddNewOrganism(finalX, finalY);
+              UpdateGameGrid(gridPanel); // Refresh the game grid after clicking the button
+            } else {
+              JOptionPane.showMessageDialog(f, "You cannot place an organism on an occupied field!");
+            }
           }
         });
         buttons[x][y] = button;

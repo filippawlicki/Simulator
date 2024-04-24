@@ -10,7 +10,8 @@ public class NightshadeBerries extends Plant {
 
   @Override
   public boolean Collision(Organism other) {
-    this.world.messageManager.AddPlantEatingMessage(this.GetName(), other.GetName());
+    this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());
+    this.world.messageManager.AddDeathMessage(other.GetName(), this.GetName());
     this.Die();
     other.Die();
     return false;

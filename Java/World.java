@@ -14,6 +14,7 @@ public class World {
   private Organism[][] mapOfTheWorld;
   private Vector<Organism> organismsList;
   private Vector<Organism> organismsToRemove;
+  private String humanCauseOfDeath;
   public MessageManager messageManager = new MessageManager();
 
   private World(final int width, int height) { // Private constructor
@@ -242,7 +243,7 @@ public class World {
         newPosition.SetX(newPosition.GetX() + 1);
         break;
       default:
-        break;
+        return false;
     }
     return IsPositionWithinBounds(newPosition);
   }
@@ -271,7 +272,9 @@ public class World {
       organism.IncrementAge();
     }
     for(Organism organism : organismsToRemove) { // Remove dead organisms
-      mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
+      if(GetOrganismAt(organism.GetPosition()) == organism) { // Check if the organism is still at its position
+        mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
+      }
       organismsList.remove(organism);
     }
     organismsCopy.clear();
@@ -289,7 +292,18 @@ public class World {
         return false;
       }
     }
+    // Searching for the cause of death
+    for(String message : messageManager.GetMessages()) {
+      if(message.contains("Human was killed by")) {
+        humanCauseOfDeath = message;
+        break;
+      }
+    }
     return true;
+  }
+
+  public String GetHumanCauseOfDeath() {
+    return humanCauseOfDeath;
   }
 
 }

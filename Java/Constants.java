@@ -28,7 +28,7 @@ public final class Constants {
   public static final int GUARANA_STRENGTH = 0;
 
   public static final char HOGWEED_SYMBOL = 'H';
-  public static final Color HOGWEED_COLOR = new Color(255, 0, 255);
+  public static final Color HOGWEED_COLOR = new Color(152, 112, 140);
   public static final String HOGWEED_NAME = "Hogweed";
   public static final int HOGWEED_STRENGTH = 10;
 
