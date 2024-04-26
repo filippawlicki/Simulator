@@ -4,7 +4,7 @@ public class Grass extends Plant {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Grass(this.world, position);
   }
 }

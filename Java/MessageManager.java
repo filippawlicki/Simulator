@@ -1,37 +1,37 @@
 import java.util.Vector;
 
 public class MessageManager {
-  private Vector<String> messages;
+  private final Vector<String> messages;
 
   public MessageManager() {
     messages = new Vector<>();
   }
 
-  public void AddDeathMessage(String dead, String killer) {
+  public final void AddDeathMessage(String dead, String killer) {
     messages.add(dead + " was killed by " + killer + ".");
   }
 
-  public void AddReproductionMessage(String parent1, String parent2, String child) {
+  public final void AddReproductionMessage(String parent1, String parent2, String child) {
     messages.add(parent1 + " and " + parent2 + " reproduced. " + child + " was born.");
   }
 
-  public void AddPlantEatingMessage(String eater, String eaten) {
+  public final void AddPlantEatingMessage(String eater, String eaten) {
     messages.add(eater + " ate " + eaten + ".");
   }
 
-  public void AddAttackRepelledMessage(String attacker, String defender) {
+  public final void AddAttackRepelledMessage(String attacker, String defender) {
     messages.add(attacker + " attacked " + defender + " but was repelled.");
   }
 
-  public void AddAttackRunawayMessage(String attacker, String defender) {
+  public final void AddAttackRunawayMessage(String attacker, String defender) {
     messages.add(attacker + " attacked " + defender + " but, " + defender + " ran away.");
   }
 
-  public Vector<String> GetMessages() {
+  public final Vector<String> GetMessages() {
     return messages;
   }
 
-  public void ClearMessages() {
+  public final void ClearMessages() {
     messages.clear();
   }
 

@@ -8,6 +8,14 @@ public abstract class Plant extends Organism {
     this.spreadChance = Constants.SPREAD_PROBABILITY;
   }
 
+  private void TryToSpread() {
+    Point newPosition = world.GetRandomPositionAround(this.GetPosition(), true, 1);
+    if (newPosition != null) {
+      Organism newOrganism = this.Clone(newPosition);
+      world.AddOrganism(newOrganism);
+    }
+  }
+
   @Override
   public void Action() {
     if(CanAction()) {
@@ -22,13 +30,5 @@ public abstract class Plant extends Organism {
     this.Die();
     this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());
     return false;
-  }
-
-  private void TryToSpread() {
-    Point newPosition = world.GetRandomPositionAround(this.GetPosition(), true, 1);
-    if (newPosition != null) {
-      Organism newOrganism = this.Clone(newPosition);
-      world.AddOrganism(newOrganism);
-    }
   }
 }

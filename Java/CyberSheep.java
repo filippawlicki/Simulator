@@ -4,15 +4,15 @@ public class CyberSheep extends Animal {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new CyberSheep(this.world, position);
   }
 
   @Override
-  public void Action() {
+  public final void Action() {
     Point nearest = this.world.FindNearestOrganism(this.GetPosition(), Constants.HOGWEED_SYMBOL);
     if (nearest != null) {
-      Point newPosition = this.GetPosition();
+      Point newPosition = new Point(this.GetPosition().GetX(), this.GetPosition().GetY());
       if (nearest.GetX() > this.GetPosition().GetX()) {
         newPosition.SetX(newPosition.GetX() + 1);
       } else if (nearest.GetX() < this.GetPosition().GetX()) {
@@ -29,9 +29,10 @@ public class CyberSheep extends Animal {
         if (this.GetSymbol() == other.GetSymbol()) {
           this.Collision(other); // Breed
         } else {
+          other.SetCanAction(false);
           if (this.GetStrength() >= other.GetStrength()) {
             boolean takenField = other.Collision(this); // Kill
-            if (!takenField && other.GetSymbol() != Constants.HOGWEED_SYMBOL && other.GetSymbol() != Constants.NIGHTSHADE_BERRIES_SYMBOL) {
+            if (!takenField && other.GetSymbol() != Constants.NIGHTSHADE_BERRIES_SYMBOL) {
               this.world.MoveOrganism(this, newPosition);
             }
           } else {

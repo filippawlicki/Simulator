@@ -6,12 +6,12 @@ public class Fox extends Animal {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Fox(this.world, position);
   }
 
   @Override
-  public void Action() {
+  public final void Action() {
     if (CanAction()) {
       Vector<Point> possibleMoves = this.world.GetPositionsAround(this.GetPosition());
       Collections.shuffle(possibleMoves);
@@ -28,6 +28,7 @@ public class Fox extends Animal {
         if (other == null) {
           this.world.MoveOrganism(this, newPosition);
         } else { // Collision
+          other.SetCanAction(false);
           if (this.GetSymbol() == other.GetSymbol()) {
             this.Collision(other); // Breed
           } else {

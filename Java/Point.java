@@ -7,17 +7,17 @@ public class Point {
     this.y = y;
   }
 
-  public int GetX() {
+  public final int GetX() {
     return x;
   }
-  public void SetX(int x) {
+  public final void SetX(int x) {
     this.x = x;
   }
 
-  public int GetY() {
+  public final int GetY() {
     return y;
   }
-  public void SetY(int y) {
+  public final void SetY(int y) {
     this.y = y;
   }
 }

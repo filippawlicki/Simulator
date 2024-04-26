@@ -29,6 +29,7 @@ public abstract class Animal extends Organism {
         if (other == null) {
           this.world.MoveOrganism(this, newPosition);
         } else { // Collision
+          other.SetCanAction(false);
           if (this.GetSymbol() == other.GetSymbol()) {
             this.Collision(other); // Breed
           } else {
@@ -50,7 +51,7 @@ public abstract class Animal extends Organism {
     }
   }
 
-  public void Breed(Organism other) {
+  public final void Breed(Organism other) {
     Point newPosition = world.GetRandomPositionForChild(this.GetPosition(), other.GetPosition());
     if (newPosition != null) {
       Organism newOrganism = this.Clone(newPosition);

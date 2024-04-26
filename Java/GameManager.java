@@ -8,18 +8,12 @@ import java.nio.file.*;
 import java.util.Vector;
 
 public class GameManager {
-  private World world;
-  private boolean quit;
+  private final World world;
   private char input;
-
-  private JFrame f;
-  private JButton[][] buttons;
+  private final JFrame f;
   private JLabel gameInfo;
-  private JLabel humanInfo;
-  private JPanel gridPanel;
 
   public GameManager(World world) {
-    this.quit = false;
     this.world = world;
     f = new JFrame("Simulation - Filip Pawlicki 198371");
   }
@@ -52,7 +46,7 @@ public class GameManager {
     } else {
       info.append("Cooldown - ").append(world.GetHumanSuperPowerCooldown()).append(" turns left");
     }
-    humanInfo.setText("<html>" + info.toString() + "</html>"); // Set the text of the JLabel
+    humanInfo.setText("<html>" + info + "</html>"); // Set the text of the JLabel
   }
 
   private void SaveGame() {
@@ -91,7 +85,105 @@ public class GameManager {
       JOptionPane.showMessageDialog(f, "Error saving game: " + e.getMessage());
     }
   }
-  private void PrintTheWorld() {
+
+  private void UpdateGameInfo(JLabel gameInfo) {
+    StringBuilder info = new StringBuilder();
+    Vector<String> messages = world.messageManager.GetMessages();
+    if(messages != null) {
+      for (String message : messages) {
+        info.append(message).append("<br>"); // Add the message to the string builder
+      }
+    }
+    gameInfo.setText("<html>" + info + "</html>"); // Set the text of the JLabel
+  }
+
+  private void AddNewOrganism(int x, int y) {
+    // Define the organisms
+    String[] organisms = {"Wolf", "Sheep", "Fox", "Turtle", "Antelope", "CyberSheep", "Sow Thistle", "Guarana", "Hogweed", "Nightshade Berries", "Grass"};
+
+    // Create a JComboBox with the organisms array
+    JComboBox<String> organismBox = new JComboBox<>(organisms);
+
+    // Create a panel to hold the JComboBox
+    JPanel panel = new JPanel(new GridLayout(0, 1));
+    panel.add(new JLabel("Select an organism:"));
+    panel.add(organismBox);
+
+    // Show the dialog
+    int result = JOptionPane.showConfirmDialog(f, panel, "Add Organism", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    // If the user clicked OK, add the selected organism
+    if (result == JOptionPane.OK_OPTION) {
+      String selectedOrganism = (String) organismBox.getSelectedItem();
+      switch (selectedOrganism) {
+        case "Wolf":
+          world.AddOrganism(new Wolf(world, new Point(x, y)));
+          break;
+        case "Sheep":
+          world.AddOrganism(new Sheep(world, new Point(x, y)));
+          break;
+        case "Fox":
+          world.AddOrganism(new Fox(world, new Point(x, y)));
+          break;
+        case "Turtle":
+          world.AddOrganism(new Turtle(world, new Point(x, y)));
+          break;
+        case "Antelope":
+          world.AddOrganism(new Antelope(world, new Point(x, y)));
+          break;
+        case "CyberSheep":
+          world.AddOrganism(new CyberSheep(world, new Point(x, y)));
+          break;
+        case "Sow Thistle":
+          world.AddOrganism(new SowThistle(world, new Point(x, y)));
+          break;
+        case "Guarana":
+          world.AddOrganism(new Guarana(world, new Point(x, y)));
+          break;
+        case "Hogweed":
+          world.AddOrganism(new Hogweed(world, new Point(x, y)));
+          break;
+        case "Nightshade Berries":
+          world.AddOrganism(new NightshadeBerries(world, new Point(x, y)));
+          break;
+        case "Grass":
+          world.AddOrganism(new Grass(world, new Point(x, y)));
+          break;
+        case null, default:
+          break;
+      }
+    }
+  }
+
+  private void UpdateGameGrid(JPanel gridPanel) {
+    gridPanel.removeAll(); // Remove all existing buttons
+
+    for (int y = 0; y < world.GetHeight(); y++) {
+      for (int x = 0; x < world.GetWidth(); x++) {
+        JButton button = new JButton();
+        Organism organism = world.GetOrganismAt(x, y);
+        if (organism != null) {
+          button.setText(String.valueOf(organism.GetSymbol()));
+          button.setBackground(organism.GetColor());
+        }
+        int finalX = x;
+        int finalY = y;
+        button.addActionListener(e -> {
+          if(world.GetOrganismAt(finalX, finalY) == null) {
+            AddNewOrganism(finalX, finalY);
+            UpdateGameGrid(gridPanel); // Refresh the game grid after clicking the button
+          } else {
+            JOptionPane.showMessageDialog(f, "You cannot place an organism on an occupied field!");
+          }
+        });
+        gridPanel.add(button);
+      }
+    }
+
+    gridPanel.revalidate();
+    gridPanel.repaint();
+  }
+  public final void GameLoop() {
     f.setLayout(new BorderLayout());
 
     // Create a panel for the buttons
@@ -150,32 +242,19 @@ public class GameManager {
     // Create the buttons and add them to the panel
     JButton saveButton = new JButton("Save");
     buttonPanel.add(saveButton);
-    saveButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        SaveGame();
-      }
-    });
+    saveButton.addActionListener(e -> SaveGame());
 
     JButton quitButton = new JButton("Quit");
     buttonPanel.add(quitButton);
-    quitButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        System.exit(0);
-      }
-    });
+    quitButton.addActionListener(e -> System.exit(0));
 
     JButton superpowerButton = new JButton("Use Superpower");
     buttonPanel.add(superpowerButton);
-    superpowerButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if(world.GetHumanSuperPowerCooldown() == 0) {
-          world.SetHumanSuperPowerDuration(Constants.HUMAN_SUPERPOWER_DURATION);
-          world.SetHumanSuperPowerCooldown(Constants.HUMAN_SUPERPOWER_COOLDOWN);
-          SetHumanInfo(humanInfo);
-        }
+    superpowerButton.addActionListener(e -> {
+      if(world.GetHumanSuperPowerCooldown() == 0) {
+        world.SetHumanSuperPowerDuration(Constants.HUMAN_SUPERPOWER_DURATION);
+        world.SetHumanSuperPowerCooldown(Constants.HUMAN_SUPERPOWER_COOLDOWN);
+        SetHumanInfo(humanInfo);
       }
     });
 
@@ -194,7 +273,6 @@ public class GameManager {
     // Create a panel for the game grid
     JPanel gridPanel = new JPanel();
     gridPanel.setLayout(new GridLayout(world.GetHeight(), world.GetWidth()));
-    buttons = new JButton[world.GetWidth()][world.GetHeight()];
 
     UpdateGameGrid(gridPanel);
 
@@ -203,21 +281,18 @@ public class GameManager {
 
     JButton nextTurnButton = new JButton("Next Turn");
     buttonPanel.add(nextTurnButton);
-    nextTurnButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if(world.IsHumanMoveLegal(input)) {
-          world.MakeTurn();
-          UpdateGameGrid(gridPanel);
-          SetHumanInfo(humanInfo);
-          UpdateGameInfo(gameInfo);
-          if(world.IsHumanDead()) {
-            JOptionPane.showMessageDialog(f, "Game over\n" + world.GetHumanCauseOfDeath());
-            System.exit(0);
-          }
-        } else {
-          JOptionPane.showMessageDialog(f, "Invalid move");
+    nextTurnButton.addActionListener(e -> {
+      if(world.IsHumanMoveLegal(input)) {
+        world.MakeTurn();
+        UpdateGameGrid(gridPanel);
+        SetHumanInfo(humanInfo);
+        UpdateGameInfo(gameInfo);
+        if(world.IsHumanDead()) {
+          JOptionPane.showMessageDialog(f, "Game over\n" + world.GetHumanCauseOfDeath());
+          System.exit(0);
         }
+      } else {
+        JOptionPane.showMessageDialog(f, "Invalid move");
       }
     });
 
@@ -225,112 +300,4 @@ public class GameManager {
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.setVisible(true);
   }
-
-  private void UpdateGameInfo(JLabel gameInfo) {
-    StringBuilder info = new StringBuilder();
-    Vector<String> messages = world.messageManager.GetMessages();
-    if(messages != null) {
-      for (String message : messages) {
-        info.append(message).append("<br>"); // Add the message to the string builder
-      }
-    }
-    gameInfo.setText("<html>" + info.toString() + "</html>"); // Set the text of the JLabel
-  }
-
-  private void AddNewOrganism(int x, int y) {
-    // Define the organisms
-    String[] organisms = {"Wolf", "Sheep", "Fox", "Turtle", "Antelope", "CyberSheep", "Sow Thistle", "Guarana", "Hogweed", "Nightshade Berries", "Grass"};
-
-    // Create a JComboBox with the organisms array
-    JComboBox<String> organismBox = new JComboBox<>(organisms);
-
-    // Create a panel to hold the JComboBox
-    JPanel panel = new JPanel(new GridLayout(0, 1));
-    panel.add(new JLabel("Select an organism:"));
-    panel.add(organismBox);
-
-    // Show the dialog
-    int result = JOptionPane.showConfirmDialog(f, panel, "Add Organism", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-    // If the user clicked OK, add the selected organism
-    if (result == JOptionPane.OK_OPTION) {
-      String selectedOrganism = (String) organismBox.getSelectedItem();
-      switch (selectedOrganism) {
-        case "Wolf":
-          world.AddOrganism(new Wolf(world, new Point(x, y)));
-          break;
-        case "Sheep":
-          world.AddOrganism(new Sheep(world, new Point(x, y)));
-          break;
-        case "Fox":
-          world.AddOrganism(new Fox(world, new Point(x, y)));
-          break;
-        case "Turtle":
-          world.AddOrganism(new Turtle(world, new Point(x, y)));
-          break;
-        case "Antelope":
-          world.AddOrganism(new Antelope(world, new Point(x, y)));
-          break;
-        case "CyberSheep":
-          world.AddOrganism(new CyberSheep(world, new Point(x, y)));
-          break;
-        case "Sow Thistle":
-          world.AddOrganism(new SowThistle(world, new Point(x, y)));
-          break;
-        case "Guarana":
-          world.AddOrganism(new Guarana(world, new Point(x, y)));
-          break;
-        case "Hogweed":
-          world.AddOrganism(new Hogweed(world, new Point(x, y)));
-          break;
-        case "Nightshade Berries":
-          world.AddOrganism(new NightshadeBerries(world, new Point(x, y)));
-          break;
-        case "Grass":
-          world.AddOrganism(new Grass(world, new Point(x, y)));
-          break;
-      }
-    }
-  }
-
-  private void UpdateGameGrid(JPanel gridPanel) {
-    gridPanel.removeAll(); // Remove all existing buttons
-
-    for (int y = 0; y < world.GetHeight(); y++) {
-      for (int x = 0; x < world.GetWidth(); x++) {
-        JButton button = new JButton();
-        Organism organism = world.GetOrganismAt(x, y);
-        if (organism != null) {
-          button.setText(String.valueOf(organism.GetSymbol()));
-          button.setBackground(organism.GetColor());
-        }
-        int finalX = x;
-        int finalY = y;
-        button.addActionListener(new ActionListener() {
-          @Override
-          public void actionPerformed(ActionEvent e) {
-            if(world.GetOrganismAt(finalX, finalY) == null) {
-              AddNewOrganism(finalX, finalY);
-              UpdateGameGrid(gridPanel); // Refresh the game grid after clicking the button
-            } else {
-              JOptionPane.showMessageDialog(f, "You cannot place an organism on an occupied field!");
-            }
-          }
-        });
-        buttons[x][y] = button;
-        gridPanel.add(button);
-      }
-    }
-
-    gridPanel.revalidate();
-    gridPanel.repaint();
-  }
-
-  public void GameLoop() {
-//    while (!quit) {
-//      // Game logic
-//    }
-    this.PrintTheWorld();
-  }
-
 }

@@ -5,23 +5,23 @@ public class Hogweed extends Plant {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Hogweed(this.world, position);
   }
 
   @Override
-  public boolean Collision(Organism other) {
+  public final boolean Collision(Organism other) {
     this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());
-    this.world.messageManager.AddDeathMessage(other.GetName(), this.GetName());
     this.Die();
     if(other.GetSymbol() != Constants.CYBERSHEEP_SYMBOL) {
+      this.world.messageManager.AddDeathMessage(other.GetName(), this.GetName());
       other.Die();
     }
     return false;
   }
 
   @Override
-  public void Action() {
+  public final void Action() {
     if(CanAction()) {
       Vector<Point> positions = world.GetPositionsAround(this.GetPosition());
       for(Point position : positions) {

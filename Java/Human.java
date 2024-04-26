@@ -4,12 +4,12 @@ public class Human extends Animal {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Human(this.world, position);
   }
 
   @Override
-  public void Action() {
+  public final void Action() {
     char input = this.world.GetHumanInput();
     if(CanAction()) {
       Point newPosition = this.GetPosition();
@@ -33,6 +33,7 @@ public class Human extends Animal {
       if (other == null) {
         this.world.MoveOrganism(this, newPosition);
       } else { // Collision
+        other.SetCanAction(false);
         if (this.GetStrength() >= other.GetStrength()) {
           boolean takenField = other.Collision(this); // Kill
           if (!takenField && other.GetSymbol() != Constants.HOGWEED_SYMBOL && other.GetSymbol() != Constants.NIGHTSHADE_BERRIES_SYMBOL) {

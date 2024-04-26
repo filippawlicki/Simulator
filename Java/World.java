@@ -1,23 +1,21 @@
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Vector;
 
 public class World {
   private static World instance;
-  private int width;
-  private int height;
+  private final int width;
+  private final int height;
   private char humanInput;
   private int humanSuperPowerDuration;
   private int humanSuperPowerCooldown;
 
-  private Organism[][] mapOfTheWorld;
-  private Vector<Organism> organismsList;
-  private Vector<Organism> organismsToRemove;
+  private final Organism[][] mapOfTheWorld;
+  private final Vector<Organism> organismsList;
+  private final Vector<Organism> organismsToRemove;
   private String humanCauseOfDeath;
   public MessageManager messageManager = new MessageManager();
 
-  private World(final int width, int height) { // Private constructor
+  private World(final int width, final int height) { // Private constructor
     this.width = width;
     this.height = height;
     mapOfTheWorld = new Organism[width][height];
@@ -33,11 +31,11 @@ public class World {
   }
 
 
-  public int GetWidth() {
+  public final int GetWidth() {
     return width;
   }
 
-  public int GetHeight() {
+  public final int GetHeight() {
     return height;
   }
 
@@ -49,38 +47,38 @@ public class World {
     return instance;
   }
 
-  public Organism GetOrganismAt(int x, int y) {
+  public final Organism GetOrganismAt(int x, int y) {
     return mapOfTheWorld[x][y];
   }
 
-  public Organism GetOrganismAt(Point position) {
+  public final Organism GetOrganismAt(Point position) {
     return mapOfTheWorld[position.GetX()][position.GetY()];
   }
 
-  public void AddOrganism(Organism organism) {
+  public final void AddOrganism(Organism organism) {
     mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = organism;
     organismsList.add(organism);
   }
 
-  public Vector<Organism> GetOrganisms() {
+  public final Vector<Organism> GetOrganisms() {
     return organismsList;
   }
 
-  public void MoveOrganism(Organism organism, Point newPosition) {
+  public final void MoveOrganism(Organism organism, Point newPosition) {
     mapOfTheWorld[organism.GetPosition().GetX()][organism.GetPosition().GetY()] = null;
     mapOfTheWorld[newPosition.GetX()][newPosition.GetY()] = organism;
     organism.SetPosition(newPosition);
   }
 
-  public boolean IsPositionWithinBounds(Point position) {
+  public final boolean IsPositionWithinBounds(Point position) {
     return position.GetX() >= 0 && position.GetX() < width && position.GetY() >= 0 && position.GetY() < height;
   }
 
-  public boolean IsPositionFree(Point position) {
+  public final boolean IsPositionFree(Point position) {
     return mapOfTheWorld[position.GetX()][position.GetY()] == null;
   }
 
-  public boolean IsAnyPositionFree() {
+  public final boolean IsAnyPositionFree() {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
         if (mapOfTheWorld[i][j] == null) {
@@ -91,8 +89,8 @@ public class World {
     return false;
   }
 
-  public Point GetRandomPositionAround(Point position, boolean onlyEmpty, int distance) {
-    Point newPosition = null;
+  public final Point GetRandomPositionAround(Point position, boolean onlyEmpty, int distance) {
+    Point newPosition;
     int x = position.GetX();
     int y = position.GetY();
     Vector<Point> positionsAround = new Vector<>(Arrays.asList(
@@ -114,8 +112,8 @@ public class World {
     return null; // Return null if no position is found
   }
 
-  public Point GetRandomPositionForChild(Point position1, Point position2) {
-    Point newPosition = null;
+  public final Point GetRandomPositionForChild(Point position1, Point position2) {
+    Point newPosition;
     int x1 = position1.GetX();
     int y1 = position1.GetY();
     int x2 = position2.GetX();
@@ -141,7 +139,7 @@ public class World {
     return null; // Return null if no position is found
   }
 
-  public Vector<Point> GetPositionsAround(Point position) {
+  public final Vector<Point> GetPositionsAround(Point position) {
     int x = position.GetX();
     int y = position.GetY();
     Vector<Point> positionsAround = new Vector<>(Arrays.asList(
@@ -154,7 +152,7 @@ public class World {
     return positionsAround;
   }
 
-  public Point GetRandomFreePosition() {
+  public final Point GetRandomFreePosition() {
     if(!IsAnyPositionFree()) {
       return null;
     }
@@ -165,11 +163,11 @@ public class World {
     return position;
   }
 
-  public void RemoveOrganism(Organism organism) {
+  public final void RemoveOrganism(Organism organism) {
     organismsToRemove.add(organism);
   }
 
-  public Point FindNearestOrganism(Point position, char symbol) {
+  public final Point FindNearestOrganism(Point position, char symbol) {
     Point nearest = null;
     int minDistance = Integer.MAX_VALUE;
     for (Organism organism : organismsList) {
@@ -184,31 +182,31 @@ public class World {
     return nearest;
   }
 
-  public char GetHumanInput() {
+  public final char GetHumanInput() {
     return humanInput;
   }
 
-  public void SetHumanInput(char input) {
+  public final void SetHumanInput(char input) {
     humanInput = input;
   }
 
-  public void SetHumanSuperPowerDuration(int duration) {
+  public final void SetHumanSuperPowerDuration(int duration) {
     humanSuperPowerDuration = duration;
   }
 
-  public void SetHumanSuperPowerCooldown(int cooldown) {
+  public final void SetHumanSuperPowerCooldown(int cooldown) {
     humanSuperPowerCooldown = cooldown;
   }
 
-  public int GetHumanSuperPowerDuration() {
+  public final int GetHumanSuperPowerDuration() {
     return humanSuperPowerDuration;
   }
 
-  public int GetHumanSuperPowerCooldown() {
+  public final int GetHumanSuperPowerCooldown() {
     return humanSuperPowerCooldown;
   }
 
-  public void HandleSuperPower() {
+  public final void HandleSuperPower() {
     if(humanSuperPowerCooldown == 5 && humanSuperPowerDuration == 5) { // Increase the strength of human
       for(Organism organism : organismsList) {
         if(organism instanceof Human) {
@@ -224,7 +222,7 @@ public class World {
     }
   }
 
-  public boolean IsHumanMoveLegal(char input) {
+  public final boolean IsHumanMoveLegal(char input) {
     Organism human = null;
     for(Organism organism : organismsList) {
       if(organism instanceof Human) {
@@ -232,6 +230,7 @@ public class World {
         break;
       }
     }
+    assert human != null;
     Point newPosition = new Point(human.GetPosition().GetX(), human.GetPosition().GetY());
     switch(input) {
       case 'U':
@@ -252,7 +251,7 @@ public class World {
     return IsPositionWithinBounds(newPosition);
   }
 
-  public void MakeTurn() {
+  public final void MakeTurn() {
     messageManager.ClearMessages();
     HandleSuperPower();
     organismsList.sort((o1, o2) -> {
@@ -290,7 +289,7 @@ public class World {
     }
   }
 
-  public boolean IsHumanDead() {
+  public final boolean IsHumanDead() {
     for(Organism organism : organismsList) {
       if(organism instanceof Human) {
         return false;
@@ -306,7 +305,7 @@ public class World {
     return true;
   }
 
-  public String GetHumanCauseOfDeath() {
+  public final String GetHumanCauseOfDeath() {
     return humanCauseOfDeath;
   }
 

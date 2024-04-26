@@ -1,13 +1,13 @@
 import java.awt.Color;
 public abstract class Organism {
-  private char symbol;
+  private final char symbol;
   private Point position;
   private int age;
   private int strength;
-  private int initiative;
+  private final int initiative;
   private boolean canAction;
-  private Color color;
-  private String name;
+  private final Color color;
+  private final String name;
   protected World world;
 
   public Organism(World world, Point position, char symbol, int strength, int initiative, Color color, String name) {
@@ -26,49 +26,49 @@ public abstract class Organism {
   public abstract boolean Collision(Organism other);
   public abstract void Action();
 
-  public char GetSymbol() {
+  public final char GetSymbol() {
     return symbol;
   }
 
-  public String GetName() { return name; }
+  public final String GetName() { return name; }
 
-  public Color GetColor() {
+  public final Color GetColor() {
     return color;
   }
 
-  public Point GetPosition() {
+  public final Point GetPosition() {
     return position;
   }
-  public void SetPosition(Point position) {
+  public final void SetPosition(Point position) {
     this.position = position;
   }
 
-  public int GetAge() {
+  public final int GetAge() {
     return age;
   }
-  public void IncrementAge() {
+  public final void IncrementAge() {
     age++;
   }
 
-  public int GetStrength() {
+  public final int GetStrength() {
     return strength;
   }
-  public void SetStrength(int strength) {
+  public final void SetStrength(int strength) {
     this.strength = strength;
   }
 
-  public int GetInitiative() {
+  public final int GetInitiative() {
     return initiative;
   }
 
-  public boolean CanAction() {
+  public final boolean CanAction() {
     return canAction;
   }
-  public void SetCanAction(boolean canAction) {
+  public final void SetCanAction(boolean canAction) {
     this.canAction = canAction;
   }
 
-  public void Die() {
+  public final void Die() {
     this.world.RemoveOrganism(this);
   }
 

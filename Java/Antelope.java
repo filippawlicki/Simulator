@@ -6,12 +6,12 @@ public class Antelope extends Animal {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Antelope(this.world, position);
   }
 
   @Override
-  public boolean Collision(Organism other) {
+  public final boolean Collision(Organism other) {
     if(this.GetSymbol() == other.GetSymbol()) {
       this.Breed(other);
       return true;

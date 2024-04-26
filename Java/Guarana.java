@@ -4,12 +4,12 @@ public class Guarana extends Plant {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Guarana(this.world, position);
   }
 
   @Override
-  public boolean Collision(Organism other) {
+  public final boolean Collision(Organism other) {
     other.SetStrength(other.GetStrength() + 3);
     this.Die();
     this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());

@@ -6,12 +6,12 @@ public class Turtle extends Animal {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new Turtle(this.world, position);
   }
 
   @Override
-  public boolean Collision(Organism other) {
+  public final boolean Collision(Organism other) {
     if (other.GetStrength() < 5) {
       this.world.messageManager.AddAttackRepelledMessage(other.GetName(), this.GetName());
       return true;
@@ -20,7 +20,7 @@ public class Turtle extends Animal {
   }
 
   @Override
-  public void Action() {
+  public final void Action() {
     Random random = new Random();
     if (random.nextInt(4) == 0) {
       super.Action();

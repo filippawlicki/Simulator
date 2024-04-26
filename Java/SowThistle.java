@@ -4,12 +4,12 @@ public class SowThistle extends Plant {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new SowThistle(this.world, position);
   }
 
   @Override
-  public void Action() {
+  public final void Action() {
     for (int i = 0; i < 3; i++) {
       super.Action();
     }

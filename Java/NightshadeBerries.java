@@ -4,12 +4,12 @@ public class NightshadeBerries extends Plant {
   }
 
   @Override
-  public Organism Clone(Point position) {
+  public final Organism Clone(Point position) {
     return new NightshadeBerries(this.world, position);
   }
 
   @Override
-  public boolean Collision(Organism other) {
+  public final boolean Collision(Organism other) {
     this.world.messageManager.AddPlantEatingMessage(other.GetName(), this.GetName());
     this.world.messageManager.AddDeathMessage(other.GetName(), this.GetName());
     this.Die();
