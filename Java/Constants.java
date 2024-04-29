@@ -19,7 +19,7 @@ public final class Constants {
   public static final String NAME_GRASS = "Grass";
   public static final int STRENGTH_GRASS = 0;
 
-  public static final char SOW_THISTLE_SYMBOL = 'T';
+  public static final char SOW_THISTLE_SYMBOL = 'S';
   public static final Color SOW_THISTLE_COLOR = new Color(255, 255, 0);
   public static final String SOW_THISTLE_NAME = "Sow Thistle";
   public static final int SOW_THISTLE_STRENGTH = 0;
