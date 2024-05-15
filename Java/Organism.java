@@ -8,9 +8,9 @@ public abstract class Organism {
   private boolean canAction;
   private final Color color;
   private final String name;
-  protected World world;
+  final World world;
 
-  public Organism(World world, Point position, char symbol, int strength, int initiative, Color color, String name) {
+  Organism(World world, Point position, char symbol, int strength, int initiative, Color color, String name) {
     this.world = world;
     this.position = position;
     this.symbol = symbol;
@@ -23,14 +23,14 @@ public abstract class Organism {
   }
 
   // Returns false if organism frees the field and true if it keeps its place
-  public abstract boolean Collision(Organism other);
+  protected abstract boolean Collision(Organism other);
   public abstract void Action();
 
   public final char GetSymbol() {
     return symbol;
   }
 
-  public final String GetName() { return name; }
+  final String GetName() { return name; }
 
   public final Color GetColor() {
     return color;
@@ -61,16 +61,16 @@ public abstract class Organism {
     return initiative;
   }
 
-  public final boolean CanAction() {
+  final boolean CanAction() {
     return canAction;
   }
   public final void SetCanAction(boolean canAction) {
     this.canAction = canAction;
   }
 
-  public final void Die() {
+  final void Die() {
     this.world.RemoveOrganism(this);
   }
 
-  public abstract Organism Clone(Point position);
+  protected abstract Organism Clone(Point position);
 }

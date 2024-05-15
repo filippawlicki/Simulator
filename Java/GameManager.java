@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Vector;
 
-public class GameManager {
+class GameManager {
   private final World world;
   private char input;
   private final JFrame f;

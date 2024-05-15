@@ -3,7 +3,7 @@ import java.awt.*;
 public abstract class Animal extends Organism {
 
   private final int moveRange;
-  public Animal(World world, Point position, char symbol, int strength, int initiative, Color color, String name, int moveRange) {
+  Animal(World world, Point position, char symbol, int strength, int initiative, Color color, String name, int moveRange) {
     super(world, position, symbol, strength, initiative, color, name);
     this.moveRange = moveRange;
   }
@@ -51,7 +51,7 @@ public abstract class Animal extends Organism {
     }
   }
 
-  public final void Breed(Organism other) {
+  final void Breed(Organism other) {
     Point newPosition = world.GetRandomPositionForChild(this.GetPosition(), other.GetPosition());
     if (newPosition != null) {
       Organism newOrganism = this.Clone(newPosition);

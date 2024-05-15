@@ -3,7 +3,7 @@ import java.awt.*;
 public abstract class Plant extends Organism {
   private final double spreadChance;
 
-  public Plant(World world, Point position, char symbol, int strength, Color color, String name) {
+  Plant(World world, Point position, char symbol, int strength, Color color, String name) {
     super(world, position, symbol, strength, Constants.PLANT_INITIATIVE, color, name);
     this.spreadChance = Constants.SPREAD_PROBABILITY;
   }

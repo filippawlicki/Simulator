@@ -13,7 +13,7 @@ public class World {
   private final Vector<Organism> organismsList;
   private final Vector<Organism> organismsToRemove;
   private String humanCauseOfDeath;
-  public MessageManager messageManager = new MessageManager();
+  public final MessageManager messageManager = new MessageManager();
 
   private World(final int width, final int height) { // Private constructor
     this.width = width;
@@ -70,15 +70,15 @@ public class World {
     organism.SetPosition(newPosition);
   }
 
-  public final boolean IsPositionWithinBounds(Point position) {
+  private boolean IsPositionWithinBounds(Point position) {
     return position.GetX() >= 0 && position.GetX() < width && position.GetY() >= 0 && position.GetY() < height;
   }
 
-  public final boolean IsPositionFree(Point position) {
+  private boolean IsPositionFree(Point position) {
     return mapOfTheWorld[position.GetX()][position.GetY()] == null;
   }
 
-  public final boolean IsAnyPositionFree() {
+  private boolean IsAnyPositionFree() {
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height; j++) {
         if (mapOfTheWorld[i][j] == null) {
@@ -206,7 +206,7 @@ public class World {
     return humanSuperPowerCooldown;
   }
 
-  public final void HandleSuperPower() {
+  private void HandleSuperPower() {
     if(humanSuperPowerCooldown == 5 && humanSuperPowerDuration == 5) { // Increase the strength of human
       for(Organism organism : organismsList) {
         if(organism instanceof Human) {

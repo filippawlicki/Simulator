@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
-public class Main {
+class Main {
 
   private void AddStartingOrganisms(World world) {
     world.AddOrganism(new Grass(world, world.GetRandomFreePosition()));

@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public final class Constants {
+final class Constants {
   // Prevent instantiation
   private Constants() {}
 
